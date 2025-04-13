@@ -5,14 +5,12 @@ public class Usuario {
     private String nombre;
     private String apellido;
     private String correo;
-    private String contrasena;
 
-    public Usuario(String id, String nombre, String apellido, String correo, String contrasena) {
+    public Usuario(String id, String nombre, String apellido, String correo) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
-        this.contrasena = contrasena;
     }
 
     public String getId() {
@@ -47,11 +45,4 @@ public class Usuario {
         this.correo = correo;
     }
 
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
 }

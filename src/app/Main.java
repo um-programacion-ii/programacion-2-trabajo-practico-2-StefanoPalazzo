@@ -1,7 +1,7 @@
 package app;
-
+import console.Consola;
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Welcome to the Digital Library!");
+        Consola.inciarConsola();
     }
 }
