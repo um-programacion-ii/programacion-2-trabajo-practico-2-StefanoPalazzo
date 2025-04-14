@@ -1,6 +1,7 @@
 package models;
 
 public class Libro extends RecursoDigital{
+    private int ISBN;
     private String autor;
     private String editorial;
     private String genero;
@@ -8,13 +9,22 @@ public class Libro extends RecursoDigital{
     private int cantPaginas;
 
 
-    public Libro(int id, String titulo, String descripcion, String autor, String editorial, String genero, int anio, int cantPaginas) {
+    public Libro(int id, String titulo, String descripcion, int ISBN,String autor, String editorial, String genero, int anio, int cantPaginas) {
         super(id,titulo,descripcion);
+        this.ISBN = ISBN;
         this.autor = autor;
         this.editorial = editorial;
         this.genero = genero;
         this.anio = anio;
         this.cantPaginas = cantPaginas;
+    }
+
+    public int getISBN() {
+        return ISBN;
+    }
+
+    public void setISBN(int ISBN) {
+        this.ISBN = ISBN;
     }
 
     public String getAutor() {
