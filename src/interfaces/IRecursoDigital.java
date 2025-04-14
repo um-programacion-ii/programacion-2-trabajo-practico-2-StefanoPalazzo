@@ -1,4 +1,8 @@
 package interfaces;
 
-public class IRecursoDigital {
+public interface IRecursoDigital {
+    void mostrarInformacion();
+    int getId();
+    String getTitulo();
+    String getDescripcion();
 }
