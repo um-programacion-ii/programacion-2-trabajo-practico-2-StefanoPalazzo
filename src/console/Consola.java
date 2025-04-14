@@ -3,20 +3,27 @@ import java.util.Scanner;
 
 
 public class Consola {
-    public static void mostrarMenu() {
-        // Aquí muestras las opciones de menú
-        System.out.println("1. Ver recursos");
-        System.out.println("2. Prestar recurso");
+    public static void MenuPrincipal() {
+        mostrarMenuPrincipal();
+        opcionesMenuPrincipal();
+    }
+
+    public static void mostrarMenuPrincipal() {
+        System.out.println("=== MENÚ PRINCIPAL ===");
+        System.out.println("1. Gestor Usuarios");
+        System.out.println("2. Gestor Recursos");
         System.out.println("3. Salir");
     }
 
-    public static void ejecutarOpcion(int opcion){
-        switch (opcion){
+    public static void opcionesMenuPrincipal() {
+        Scanner sc = new Scanner(System.in);
+        int opcion = sc.nextInt();
+        switch (opcion) {
             case 1:
-                System.out.println("Mostrando recursos...");
+                MenuUsuarios();
                 break;
             case 2:
-                System.out.println("Prestando recurso...");
+                MenuRecursos();
                 break;
             case 3:
                 System.out.println("Salir");
@@ -27,19 +34,81 @@ public class Consola {
         }
     }
 
-    public static void inciarConsola() {
-        boolean ejecutar = true;
-        mostrarMenu();
+    public static void MenuUsuarios() {
+        mostrarMenuUsuarios();
+        opcionesUsuarios();
+    }
+
+    public static void mostrarMenuUsuarios() {
+        System.out.println("--- Gestor Usuarios ---");
+        System.out.println("1. Listar Usuarios");
+        System.out.println("2. Agregar Usuario");
+        System.out.println("3. Eliminar Usuario");
+        System.out.println("4. Volver");
+    }
+
+    public static void opcionesUsuarios() {
+        mostrarMenuUsuarios();
         Scanner sc = new Scanner(System.in);
         int opcion = sc.nextInt();
-        while (ejecutar){
-            if (opcion == 3){
-                ejecutar = false;
-            }
-            else {
-                ejecutarOpcion(opcion);
-                ejecutar = false; // esto es para evitar que entre en un bucle
-            }
-            }
+        switch (opcion) {
+            case 1:
+                System.out.println("Listando Usuarios");
+                break;
+            case 2:
+                System.out.println("Agregar Usuario");
+                break;
+            case 3:
+                System.out.println("Eliminar Usuario");
+                break;
+            case 4:
+                MenuPrincipal();
+                break;
+            default:
+                System.out.println("Opcion no valida");
+                MenuPrincipal();
+                break;
         }
     }
+
+    public static void MenuRecursos() {
+        mostrarMenuRecursos();
+        opcionesRecursos();
+    }
+
+    public static void mostrarMenuRecursos() {
+        System.out.println("--- Gestor Recursos ---");
+        System.out.println("1. Listar Recursos");
+        System.out.println("2. Agregar Recurso");
+        System.out.println("3. Eliminar Recurso");
+        System.out.println("4. Volver");
+    }
+
+    public static void opcionesRecursos() {
+        Scanner sc = new Scanner(System.in);
+        int opcion = sc.nextInt();
+        switch (opcion) {
+            case 1:
+                System.out.println("Listando Recurso");
+                break;
+            case 2:
+                System.out.println("Agregar Recurso");
+                break;
+            case 3:
+                System.out.println("Eliminar Recurso");
+                break;
+            case 4:
+                MenuPrincipal();
+                break;
+            default:
+                System.out.println("Opcion no valida");
+                MenuPrincipal();
+                break;
+        }
+    }
+
+
+    public static void inciarConsola() {
+        MenuPrincipal();
+    }
+}
