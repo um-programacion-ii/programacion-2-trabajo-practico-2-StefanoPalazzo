@@ -1,6 +1,10 @@
 package models;
 
-public class Libro extends RecursoDigital{
+import interfaces.Prestable;
+import interfaces.Renovable;
+
+public class Libro extends RecursoDigital implements Prestable, Renovable {
+    private boolean prestado;
     private int ISBN;
     private String autor;
     private String editorial;
@@ -65,6 +69,26 @@ public class Libro extends RecursoDigital{
 
     public void setCantPaginas(int cantPaginas) {
         this.cantPaginas = cantPaginas;
+    }
+
+    @Override
+    public void prestar() {
+        prestado = true;
+    }
+
+    @Override
+    public void devolver() {
+        prestado = false;
+    }
+
+    @Override
+    public boolean estaPrestado() {
+        return prestado;
+    }
+
+    @Override
+    public void renovar() {
+        System.out.println("El libro ha sido renovado.");
     }
 
     @Override

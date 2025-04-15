@@ -81,7 +81,10 @@ public class Consola {
         System.out.println("1. Listar Recursos");
         System.out.println("2. Agregar Recurso");
         System.out.println("3. Eliminar Recurso");
-        System.out.println("4. Volver");
+        System.out.println("4. Prestar recurso");
+        System.out.println("5. Devolver recurso");
+        System.out.println("6. Renovar recurso");
+        System.out.println("7. Volver");
     }
 
     public static void opcionesRecursos() {
@@ -98,6 +101,15 @@ public class Consola {
                 System.out.println("Eliminar Recurso");
                 break;
             case 4:
+                System.out.println("Prestar Recurso ");
+                break;
+            case 5:
+                System.out.println("Devolviendo Recurso ");
+                break;
+            case 6:
+                System.out.println("Renovando recurso ");
+                break;
+            case 7:
                 MenuPrincipal();
                 break;
             default:
