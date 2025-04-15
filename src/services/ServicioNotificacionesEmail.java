@@ -1,4 +1,9 @@
 package services;
 
-public class ServicioNotificacionesEmail {
+import interfaces.IServicioNotificaciones;
+
+public class ServicioNotificacionesEmail implements IServicioNotificaciones {
+    public void enviarNotificacion(String mensaje){
+        System.out.println("[EMAIL] " + mensaje);
+    }
 }
