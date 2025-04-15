@@ -1,8 +1,32 @@
 package console;
-import java.util.Scanner;
 
+import java.util.Scanner;
+import models.Usuario;
+import models.RecursoDigital;
+import services.GestorUsuarios;
+import services.GestorRecursos;
+import services.ServicioNotificacionesEmail;
 
 public class Consola {
+    private static GestorUsuarios gestorUsuarios;
+    private static GestorRecursos gestorRecursos;
+
+    public static void main(String[] args) {
+        // Inicializar los servicios de notificación
+        ServicioNotificacionesEmail servicioNotificacionesEmail = new ServicioNotificacionesEmail();
+
+        // Inicializar los gestores
+        gestorUsuarios = new GestorUsuarios(servicioNotificacionesEmail);
+        gestorRecursos = new GestorRecursos(servicioNotificacionesEmail);
+
+        // Iniciar la consola
+        inciarConsola();
+    }
+
+    public static void inciarConsola() {
+        MenuPrincipal();
+    }
+
     public static void MenuPrincipal() {
         mostrarMenuPrincipal();
         opcionesMenuPrincipal();
@@ -29,7 +53,8 @@ public class Consola {
                 System.out.println("Salir");
                 break;
             default:
-                System.out.println("Opcion no valida");
+                System.out.println("Opción no válida");
+                opcionesMenuPrincipal();
                 break;
         }
     }
@@ -48,25 +73,24 @@ public class Consola {
     }
 
     public static void opcionesUsuarios() {
-        mostrarMenuUsuarios();
         Scanner sc = new Scanner(System.in);
         int opcion = sc.nextInt();
         switch (opcion) {
             case 1:
-                System.out.println("Listando Usuarios");
+                gestorUsuarios.listarUsuarios();
                 break;
             case 2:
-                System.out.println("Agregar Usuario");
+                System.out.println("Agregar Usuario");;
                 break;
             case 3:
-                System.out.println("Eliminar Usuario");
+                System.out.println("Eliminar Usuario");;
                 break;
             case 4:
                 MenuPrincipal();
                 break;
             default:
-                System.out.println("Opcion no valida");
-                MenuPrincipal();
+                System.out.println("Opción no válida");
+                opcionesUsuarios();
                 break;
         }
     }
@@ -81,9 +105,9 @@ public class Consola {
         System.out.println("1. Listar Recursos");
         System.out.println("2. Agregar Recurso");
         System.out.println("3. Eliminar Recurso");
-        System.out.println("4. Prestar recurso");
-        System.out.println("5. Devolver recurso");
-        System.out.println("6. Renovar recurso");
+        System.out.println("4. Prestar Recurso");
+        System.out.println("5. Devolver Recurso");
+        System.out.println("6. Renovar Recurso");
         System.out.println("7. Volver");
     }
 
@@ -92,7 +116,7 @@ public class Consola {
         int opcion = sc.nextInt();
         switch (opcion) {
             case 1:
-                System.out.println("Listando Recurso");
+                gestorRecursos.listarRecursos();
                 break;
             case 2:
                 System.out.println("Agregar Recurso");
@@ -101,26 +125,22 @@ public class Consola {
                 System.out.println("Eliminar Recurso");
                 break;
             case 4:
-                System.out.println("Prestar Recurso ");
+                System.out.println("Prestar Recurso");
                 break;
             case 5:
-                System.out.println("Devolviendo Recurso ");
+                System.out.println("Devolver Recurso");
                 break;
             case 6:
-                System.out.println("Renovando recurso ");
+                System.out.println("Renovar Recurso");
                 break;
             case 7:
                 MenuPrincipal();
                 break;
             default:
-                System.out.println("Opcion no valida");
-                MenuPrincipal();
+                System.out.println("Opción no válida");
+                opcionesRecursos();
                 break;
         }
     }
 
-
-    public static void inciarConsola() {
-        MenuPrincipal();
-    }
 }
