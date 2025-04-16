@@ -1,23 +1,23 @@
 package models;
 
 public class Usuario {
-    private String id;
+    private int id;
     private String nombre;
     private String apellido;
     private String correo;
 
-    public Usuario(String id, String nombre, String apellido, String correo) {
+    public Usuario(int id, String nombre, String apellido, String correo) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
