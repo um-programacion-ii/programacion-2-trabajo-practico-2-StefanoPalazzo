@@ -10,7 +10,7 @@ public class Revista extends RecursoDigital implements Renovable {
     private LocalDate fechaPublicacion;
 
     public Revista(int id, String titulo, String descripcion, String categoria, String editorial, int numero, LocalDate fechaPublicacion) {
-        super(id, titulo, descripcion, categoria);
+        super(id, titulo, descripcion, CategoriaRecurso.desdeString(categoria));
         this.editorial = editorial;
         this.numero = numero;
         this.fechaPublicacion = fechaPublicacion;

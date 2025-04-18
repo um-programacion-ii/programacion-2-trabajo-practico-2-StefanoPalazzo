@@ -8,14 +8,13 @@ public class Libro extends RecursoDigital implements Prestable, Renovable {
     private int ISBN;
     private String autor;
     private String editorial;
-    private String categoria;
     private int anio;
     private int cantPaginas;
 
 
-    public Libro(int id, String titulo, String descripcion, int ISBN,String autor, String editorial, String categoria, int anio, int cantPaginas) {
-        super(id,titulo,descripcion, categoria);
-        this.ISBN = ISBN;
+    public Libro(int id, String titulo, String descripcion, String categoria, String ISBN,String autor, String editorial, int anio, int cantPaginas) {
+        super(id, titulo, descripcion, CategoriaRecurso.desdeString(categoria));
+        this.ISBN = Integer.parseInt(ISBN);
         this.autor = autor;
         this.editorial = editorial;
         this.anio = anio;
@@ -23,7 +22,7 @@ public class Libro extends RecursoDigital implements Prestable, Renovable {
     }
 
     public Libro(int id, String titulo, String descripcion, String categoria, String isbn, String autor, String editorial, int anio) {
-        super(id, titulo, descripcion, categoria);
+        super(id, titulo, descripcion, CategoriaRecurso.desdeString(categoria));
         this.ISBN = ISBN;
         this.autor = autor;
         this.editorial = editorial;
