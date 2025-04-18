@@ -1,6 +1,7 @@
 package services;
 
 import interfaces.IServicioNotificaciones;
+import interfaces.Prestable;
 import models.CategoriaRecurso;
 import models.RecursoDigital;
 
@@ -36,8 +37,30 @@ public class GestorRecursos {
         servicioNotificaciones.enviarNotificacion("RecursoDigital " + r.getTitulo() + " eliminado con éxito.");
     }
 
-    public void prestarRecurso(RecursoDigital r) {
-        servicioNotificaciones.enviarNotificacion("RecursoDigital " + r.getTitulo() + " prestado con éxito.");
+    public void prestarRecursoPorId(String idStr) throws exceptions.RecursoNoDisponibleException {
+        try {
+            int id = Integer.parseInt(idStr);
+            RecursoDigital recurso = buscarRecursoPorId(id);
+
+            if (recurso == null) {
+                throw new exceptions.RecursoNoDisponibleException("No se encontró un recurso con ID " + id);
+            }
+
+            if (!(recurso instanceof Prestable recursoPrestable)) {
+                throw new exceptions.RecursoNoDisponibleException("Este tipo de recurso no puede ser prestado.");
+            }
+
+            if (recursoPrestable.estaPrestado()) {
+                throw new exceptions.RecursoNoDisponibleException("El recurso ya está prestado.");
+            }
+
+            recursoPrestable.prestar();
+            servicioNotificaciones.enviarNotificacion("RecursoDigital " + recurso.getTitulo() + " prestado con éxito.");
+            System.out.println("✅ Recurso prestado con éxito: " + recurso.getTitulo());
+
+        } catch (NumberFormatException e) {
+            System.out.println("El ID ingresado no es un número válido.");
+        }
     }
 
     public void devolverRecurso(RecursoDigital r) {

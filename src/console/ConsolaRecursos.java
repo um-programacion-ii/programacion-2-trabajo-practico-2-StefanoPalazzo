@@ -59,7 +59,14 @@ public class ConsolaRecursos {
                 System.out.println("Eliminar Recurso");
                 break;
             case 4:
-                System.out.println("Prestar Recurso");
+                System.out.println("- Prestar Recurso -");
+                System.out.println("ID del recurso a prestar: ");
+                String idStr = sc.nextLine();
+                try {
+                    Consola.gestorRecursos.prestarRecursoPorId(idStr);
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
                 break;
             case 5:
                 System.out.println("Devolver Recurso");

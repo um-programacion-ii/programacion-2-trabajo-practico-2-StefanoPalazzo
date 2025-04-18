@@ -27,6 +27,8 @@ public class Libro extends RecursoDigital implements Prestable, Renovable {
         this.autor = autor;
         this.editorial = editorial;
         this.anio = anio;
+        prestado = false;
+
     }
 
     public int getISBN() {
@@ -68,7 +70,6 @@ public class Libro extends RecursoDigital implements Prestable, Renovable {
     public void setCantPaginas(int cantPaginas) {
         this.cantPaginas = cantPaginas;
     }
-
     @Override
     public void prestar() {
         prestado = true;

@@ -50,14 +50,22 @@ public class ConsolaUsuarios {
                 Consola.gestorUsuarios.eliminarUsuario(dniAEliminar);
                 break;
             case 4:
-                System.out.println("Ingresar nombre del usuario");
-                String nombreBuscado = sc.nextLine();
-                Consola.gestorUsuarios.buscarUsuarioPorNombreOApellido(nombreBuscado);
+                try {
+                    System.out.println("Ingrese nombre o apellido del usuario");
+                    String nombreBuscado = sc.nextLine();
+                    Consola.gestorUsuarios.buscarUsuarioPorNombreOApellido(nombreBuscado);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
                 break;
             case 5:
-                System.out.println("Ingresar ID del usuario");
-                int idUsuario = sc.nextInt();
-                Consola.gestorUsuarios.buscarUsuarioPorId(idUsuario);
+                try {
+                    System.out.println("Ingrese ID del usuario");
+                    int idUsuario = sc.nextInt();
+                    Consola.gestorUsuarios.buscarUsuarioPorId(idUsuario);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
             case 6:
                 break;
             default:
