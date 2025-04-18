@@ -4,7 +4,9 @@ import interfaces.IServicioNotificaciones;
 import models.RecursoDigital;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GestorRecursos {
     private ArrayList<RecursoDigital> recursos = new ArrayList<>();
@@ -45,23 +47,16 @@ public class GestorRecursos {
         servicioNotificaciones.enviarNotificacion("RecursoDigital " + r.getTitulo() + " renovado con éxito.");
     }
 
-    public ArrayList<RecursoDigital> buscarRecursoPorTitulo(String titulo) {
-        ArrayList<RecursoDigital> encontrados = new ArrayList<>();
-        int index = 1;
+    public List<RecursoDigital> buscarRecursoPorTitulo(String texto) {
+        return recursos.stream()
+                .filter(r -> r.getTitulo().toLowerCase().contains(texto.toLowerCase()))
+                .collect(Collectors.toList());
+    }
 
-        for (RecursoDigital recurso : recursos) {
-            if (recurso.getTitulo().toLowerCase().contains(titulo.toLowerCase())) {
-                System.out.println(index + " - " + recurso.getTitulo() + " (" + recurso.getId() + ")");
-                encontrados.add(recurso);
-                index++;
-            }
-        }
-
-        if (encontrados.isEmpty()) {
-            System.out.println("No se encontraron recursos con el título ingresado.");
-        }
-
-        return encontrados;
+    public List<RecursoDigital> filtrarPorCategoria(String categoria) {
+        return recursos.stream()
+                .filter(r -> r.getCategoria().equalsIgnoreCase(categoria))
+                .collect(Collectors.toList());
     }
 
 
@@ -74,9 +69,20 @@ public class GestorRecursos {
                 return recurso;
             }
         }
-
         System.out.println("No se encontró ningún recurso con el ID ingresado.");
         return null;
+    }
+
+    public List<RecursoDigital> ordenarPorTitulo() {
+        return recursos.stream()
+                .sorted(Comparator.comparing(RecursoDigital::getTitulo))
+                .collect(Collectors.toList());
+    }
+
+    public List<RecursoDigital> ordenarPorId() {
+        return recursos.stream()
+                .sorted(Comparator.comparingInt(RecursoDigital::getId))
+                .collect(Collectors.toList());
     }
 
 
