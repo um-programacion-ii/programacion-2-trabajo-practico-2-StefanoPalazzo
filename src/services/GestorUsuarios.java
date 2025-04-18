@@ -19,18 +19,25 @@ public class GestorUsuarios {
     public void listarUsuarios() {
         System.out.println("Lista de Usuarios:");
         for (Usuario u : usuarios.values()) {
-            System.out.println("- " + u.getNombre() + " " + u.getApellido());
+            System.out.println("- " + u.getNombre() + " " + u.getApellido() + "(" + u.getId() + ")");
         }
         servicioNotificaciones.enviarNotificacion("Listado de usuarios mostrado correctamente.");
     }
 
     public void agregarUsuario(Usuario usuario) {
         usuarios.put(usuario.getId(), usuario);
-        System.out.println("👤 Usuario agregado: " + usuario.getNombre());
+        System.out.println("Usuario agregado: "+ usuario.getNombre() + " " + usuario.getApellido() + "(" + usuario.getId() + ")");
     }
 
-    public void eliminarUsuario(Usuario u) {
-        servicioNotificaciones.enviarNotificacion("Usuario " + u.getNombre() + " eliminado con éxito.");
+    public void eliminarUsuario(int id) {
+        if (usuarios.containsKey(id)){
+            Usuario u = usuarios.get(id);
+            String nombre = u.getNombre() + " " + u.getApellido() + "(" + u.getId() + ")";
+            usuarios.remove(id);
+            servicioNotificaciones.enviarNotificacion("Usuario " + nombre + " eliminado con éxito.");
+        } else {
+            servicioNotificaciones.enviarNotificacion("Usuario no encontrado.");
+        }
     }
 
     public List<Usuario> buscarUsuarioPorNombreOApellido(String textoBuscado) {

@@ -5,4 +5,5 @@ public interface IRecursoDigital {
     int getId();
     String getTitulo();
     String getDescripcion();
+    String getCategoria();
 }
