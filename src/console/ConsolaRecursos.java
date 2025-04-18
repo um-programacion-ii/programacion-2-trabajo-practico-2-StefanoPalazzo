@@ -33,7 +33,8 @@ public class ConsolaRecursos {
         System.out.println("6. Renovar Recurso");
         System.out.println("7. Buscar recursos");
         System.out.println("8. Buscar por ID");
-        System.out.println("9. Volver");
+        System.out.println("9. Cargar Recursos de Ejemplo");
+        System.out.println("10. Volver");
     }
 
     public static void opcionesRecursos() {
@@ -75,7 +76,25 @@ public class ConsolaRecursos {
                 Consola.gestorRecursos.buscarRecursoPorId(idBuscado);
                 break;
             case 9:
+                System.out.println("Cargando recursos de ejemplo...");
+
+                Libro libro1 = new Libro(1, "Cien Años de Soledad", "Una novela de realismo mágico de Gabriel García Márquez.", "Libro", "978-3-16-148410-0", "Gabriel García Márquez", "Editorial XYZ", 1967);
+                Consola.gestorRecursos.agregarRecurso(libro1);
+                System.out.println("Ejemplo de Libro agregado.");
+
+                Audiolibro audiolibro1 = new Audiolibro(2, "El Hobbit - Audiolibro", "Narración de la famosa novela de J.R.R. Tolkien.", "Audiolibro", "J.R.R. Tolkien", 300, "Narrador 1");
+                Consola.gestorRecursos.agregarRecurso(audiolibro1);
+                System.out.println("Ejemplo de Audiolibro agregado.");
+
+                Revista revista1 = new Revista(3, "National Geographic - Especial Ciencia", "Revista de divulgación científica.", "Revista", "National Geographic", 122, LocalDate.of(2024, 4, 10));
+                Consola.gestorRecursos.agregarRecurso(revista1);
+                System.out.println("Ejemplo de Revista agregado.");
+
                 break;
+
+            case 10:
+                break;
+
             default:
                 System.out.println("Opción no válida");
                 opcionesRecursos();
@@ -96,8 +115,7 @@ public class ConsolaRecursos {
                 System.out.print("Descripción: ");
                 String descLibro = sc.nextLine();
 
-                System.out.print("Categoría: ");
-                categoria = sc.nextLine();
+                categoria = "Libro";
 
                 System.out.print("ISBN: ");
                 String isbn = sc.nextLine();
@@ -127,8 +145,7 @@ public class ConsolaRecursos {
                 System.out.print("Descripción: ");
                 String descAudio = sc.nextLine();
 
-                System.out.print("Categoría: ");
-                categoria = sc.nextLine();
+                categoria = "Audiolibro";
 
                 System.out.print("Autor: ");
                 autor = sc.nextLine();
@@ -156,8 +173,7 @@ public class ConsolaRecursos {
                 System.out.print("Descripción: ");
                 String descRevista = sc.nextLine();
 
-                System.out.print("Categoría: ");
-                categoria = sc.nextLine();
+                categoria = "Revista";
 
                 System.out.print("Editorial: ");
                 editorial = sc.nextLine();
