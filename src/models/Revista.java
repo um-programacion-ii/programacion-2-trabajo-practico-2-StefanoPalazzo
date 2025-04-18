@@ -9,8 +9,8 @@ public class Revista extends RecursoDigital implements Renovable {
     private int numero;
     private LocalDate fechaPublicacion;
 
-    public Revista(int id, String titulo, String descripcion, String editorial, int numero, LocalDate fechaPublicacion) {
-        super(id, titulo, descripcion);
+    public Revista(int id, String titulo, String descripcion, String categoria, String editorial, int numero, LocalDate fechaPublicacion) {
+        super(id, titulo, descripcion, categoria);
         this.editorial = editorial;
         this.numero = numero;
         this.fechaPublicacion = fechaPublicacion;
@@ -52,6 +52,7 @@ public class Revista extends RecursoDigital implements Renovable {
         System.out.println("Título: " + getTitulo());
         System.out.println("Descripción: " + getDescripcion());
         System.out.println("Editorial: " + getEditorial());
+        System.out.println("Categoria: " + getCategoria());
         System.out.println("Número: " + getNumero());
         System.out.println("Fecha de Publicación: " + getFechaPublicacion());
     }

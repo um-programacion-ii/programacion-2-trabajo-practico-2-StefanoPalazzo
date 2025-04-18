@@ -4,9 +4,10 @@ public class Audiolibro extends RecursoDigital {
     private String autor;
     private int duracion;
     private String narrador;
+    private String categoria;
 
-    public Audiolibro(int id, String titulo, String descripcion, String autor, int duracion, String narrador) {
-        super(id, titulo, descripcion);
+    public Audiolibro(int id, String titulo, String descripcion, String categoria, String autor, int duracion, String narrador) {
+        super(id, titulo, descripcion, categoria);
         this.autor = autor;
         this.duracion = duracion;
         this.narrador = narrador;
@@ -44,5 +45,6 @@ public class Audiolibro extends RecursoDigital {
         System.out.println("Autor: " + getAutor());
         System.out.println("Duración: " + getDuracion() + " minutos");
         System.out.println("Narrador: " + getNarrador());
+        System.out.println("Categoria: " + getCategoria());
     }
 }

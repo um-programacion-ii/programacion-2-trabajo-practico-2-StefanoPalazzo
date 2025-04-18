@@ -8,19 +8,26 @@ public class Libro extends RecursoDigital implements Prestable, Renovable {
     private int ISBN;
     private String autor;
     private String editorial;
-    private String genero;
+    private String categoria;
     private int anio;
     private int cantPaginas;
 
 
-    public Libro(int id, String titulo, String descripcion, int ISBN,String autor, String editorial, String genero, int anio, int cantPaginas) {
-        super(id,titulo,descripcion);
+    public Libro(int id, String titulo, String descripcion, int ISBN,String autor, String editorial, String categoria, int anio, int cantPaginas) {
+        super(id,titulo,descripcion, categoria);
         this.ISBN = ISBN;
         this.autor = autor;
         this.editorial = editorial;
-        this.genero = genero;
         this.anio = anio;
         this.cantPaginas = cantPaginas;
+    }
+
+    public Libro(int id, String titulo, String descripcion, String categoria, String isbn, String autor, String editorial, int anio) {
+        super(id, titulo, descripcion, categoria);
+        this.ISBN = ISBN;
+        this.autor = autor;
+        this.editorial = editorial;
+        this.anio = anio;
     }
 
     public int getISBN() {
@@ -45,14 +52,6 @@ public class Libro extends RecursoDigital implements Prestable, Renovable {
 
     public void setEditorial(String editorial) {
         this.editorial = editorial;
-    }
-
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
     }
 
     public int getAnio() {
@@ -98,7 +97,7 @@ public class Libro extends RecursoDigital implements Prestable, Renovable {
         System.out.println("Descripcion: " + getDescripcion());
         System.out.println("Autor: " + getAutor());
         System.out.println("Editorial: " + getEditorial());
-        System.out.println("Genero: " + getGenero());
+        System.out.println("Categoria: " + getCategoria());
         System.out.println("Anio: " + getAnio());
         System.out.println("CantPaginas: " + getCantPaginas());
     }
