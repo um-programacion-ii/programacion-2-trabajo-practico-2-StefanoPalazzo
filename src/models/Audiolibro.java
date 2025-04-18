@@ -4,10 +4,9 @@ public class Audiolibro extends RecursoDigital {
     private String autor;
     private int duracion;
     private String narrador;
-    private String categoria;
 
     public Audiolibro(int id, String titulo, String descripcion, String categoria, String autor, int duracion, String narrador) {
-        super(id, titulo, descripcion, categoria);
+        super(id, titulo, descripcion, CategoriaRecurso.desdeString(categoria));
         this.autor = autor;
         this.duracion = duracion;
         this.narrador = narrador;

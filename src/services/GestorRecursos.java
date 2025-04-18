@@ -1,6 +1,7 @@
 package services;
 
 import interfaces.IServicioNotificaciones;
+import models.CategoriaRecurso;
 import models.RecursoDigital;
 
 import java.util.ArrayList;
@@ -54,10 +55,12 @@ public class GestorRecursos {
     }
 
     public List<RecursoDigital> filtrarPorCategoria(String categoria) {
+        CategoriaRecurso categoriaEnum = CategoriaRecurso.desdeString(categoria); // Conversión del string a CategoriaRecurso
         return recursos.stream()
-                .filter(r -> r.getCategoria().equalsIgnoreCase(categoria))
+                .filter(r -> r.getCategoria() == categoriaEnum)
                 .collect(Collectors.toList());
     }
+
 
 
     public RecursoDigital buscarRecursoPorId(int idBuscado) {

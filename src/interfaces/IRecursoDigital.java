@@ -1,9 +1,11 @@
 package interfaces;
 
+import models.CategoriaRecurso;
+
 public interface IRecursoDigital {
     void mostrarInformacion();
     int getId();
     String getTitulo();
     String getDescripcion();
-    String getCategoria();
+    CategoriaRecurso getCategoria();
 }
