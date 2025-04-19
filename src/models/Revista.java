@@ -4,7 +4,7 @@ import interfaces.Renovable;
 
 import java.time.LocalDate;
 
-public class Revista extends RecursoDigital implements Renovable {
+public class Revista extends RecursoDigital {
     private String editorial;
     private int numero;
     private LocalDate fechaPublicacion;
@@ -39,12 +39,6 @@ public class Revista extends RecursoDigital implements Renovable {
     public void setFechaPublicacion(LocalDate fechaPublicacion) {
         this.fechaPublicacion = fechaPublicacion;
     }
-
-    @Override
-    public void renovar() {
-        System.out.println("La revista ha sido renovada.");
-    }
-
 
     @Override
     public void mostrarInformacion() {
