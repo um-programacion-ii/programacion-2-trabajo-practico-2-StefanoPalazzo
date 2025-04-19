@@ -7,7 +7,7 @@ import exceptions.RecursoNoDisponibleException;
 
 
 public class Libro extends RecursoDigital implements Prestable, Renovable {
-    private boolean prestado;
+    private String estado;
     private int ISBN;
     private String autor;
     private String editorial;
@@ -35,7 +35,7 @@ public class Libro extends RecursoDigital implements Prestable, Renovable {
         this.autor = autor;
         this.editorial = editorial;
         this.anio = anio;
-        prestado = false;
+        estado = "Disponible";
 
     }
 
@@ -81,20 +81,17 @@ public class Libro extends RecursoDigital implements Prestable, Renovable {
 
     @Override
     public void prestar() {
-        prestado = true;
-        fechaPrestamo = LocalDate.now();
-        fechaDevolucion = fechaPrestamo.plusDays(diasPrestamo);
-        renovacionesHechas = 0;
+        estado = "Prestado";
     }
 
     @Override
     public void devolver() {
-        prestado = false;
+        estado = "Disponible";
     }
 
     @Override
     public boolean estaPrestado() {
-        return prestado;
+        return estado.equalsIgnoreCase("Prestado");
     }
 
     @Override
@@ -122,13 +119,13 @@ public class Libro extends RecursoDigital implements Prestable, Renovable {
         System.out.println("Categoria: " + getCategoria());
         System.out.println("Anio: " + getAnio());
         System.out.println("CantPaginas: " + getCantPaginas());
-        if (prestado) {
+        if (estaPrestado()) {
             System.out.println("Estado: Prestado");
             System.out.println("Fecha de prestamo: " + fechaPrestamo);
             System.out.println("Fecha de devolucion: " + fechaDevolucion);
             System.out.println("Renovaciones: " + renovacionesHechas);
         } else {
-            System.out.println("Estado: Disponible");
+            System.out.println("Estado: " + estado);
         }
     }
 }

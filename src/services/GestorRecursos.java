@@ -4,6 +4,7 @@ import interfaces.IServicioNotificaciones;
 import interfaces.Prestable;
 import interfaces.Renovable;
 import models.CategoriaRecurso;
+import models.Prestamo;
 import models.RecursoDigital;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GestorRecursos {
-    private ArrayList<RecursoDigital> recursos = new ArrayList<>();
+    private static ArrayList<RecursoDigital> recursos = new ArrayList<>();
     private IServicioNotificaciones servicioNotificaciones;
 
     public GestorRecursos(IServicioNotificaciones servicioNotificaciones) {
@@ -36,58 +37,6 @@ public class GestorRecursos {
 
     public void eliminarRecurso(RecursoDigital r) {
         servicioNotificaciones.enviarNotificacion("RecursoDigital " + r.getTitulo() + " eliminado con éxito.");
-    }
-
-    public void prestarRecursoPorId(String idStr) throws exceptions.RecursoNoDisponibleException {
-        try {
-            int id = Integer.parseInt(idStr);
-            RecursoDigital recurso = buscarRecursoPorId(id);
-
-            if (recurso == null) {
-                throw new exceptions.RecursoNoDisponibleException("No se encontró un recurso con ID " + id);
-            }
-
-            if (!(recurso instanceof Prestable recursoPrestable)) {
-                throw new exceptions.RecursoNoDisponibleException("Este tipo de recurso no puede ser prestado.");
-            }
-
-            if (recursoPrestable.estaPrestado()) {
-                throw new exceptions.RecursoNoDisponibleException("El recurso ya está prestado.");
-            }
-
-            recursoPrestable.prestar();
-            servicioNotificaciones.enviarNotificacion("RecursoDigital " + recurso.getTitulo() + " prestado con éxito.");
-            System.out.println("✅ Recurso prestado con éxito: " + recurso.getTitulo());
-
-        } catch (NumberFormatException e) {
-            System.out.println("El ID ingresado no es un número válido.");
-        }
-    }
-
-    public void devolverRecursoPorId(String idStr) throws exceptions.RecursoNoDisponibleException {
-        try {
-            int id = Integer.parseInt(idStr);
-            RecursoDigital recurso = buscarRecursoPorId(id);
-
-            if (recurso == null) {
-                throw new exceptions.RecursoNoDisponibleException("No se encontró un recurso con ID " + id);
-            }
-
-            if (!(recurso instanceof Prestable recursoPrestable)) {
-                throw new exceptions.RecursoNoDisponibleException("Este tipo de recurso no puede ser devuelto.");
-            }
-
-            if (!recursoPrestable.estaPrestado()) {
-                throw new exceptions.RecursoNoDisponibleException("El recurso no está prestado actualmente.");
-            }
-
-            recursoPrestable.devolver();
-            servicioNotificaciones.enviarNotificacion("RecursoDigital " + recurso.getTitulo() + " devuelto con éxito.");
-            System.out.println("Recurso devuelto con éxito: " + recurso.getTitulo());
-
-        } catch (NumberFormatException e) {
-            System.out.println("El ID ingresado no es un número válido.");
-        }
     }
 
 
@@ -130,7 +79,7 @@ public class GestorRecursos {
 
 
 
-    public RecursoDigital buscarRecursoPorId(int idBuscado) {
+    public static RecursoDigital buscarRecursoPorId(int idBuscado) {
         for (int i = 0; i < recursos.size(); i++) {
             RecursoDigital recurso = recursos.get(i);
             if (recurso.getId() == idBuscado) {
