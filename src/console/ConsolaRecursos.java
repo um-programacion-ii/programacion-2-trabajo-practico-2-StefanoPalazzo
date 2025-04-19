@@ -28,13 +28,10 @@ public class ConsolaRecursos {
         System.out.println("1. Listar Recursos");
         System.out.println("2. Agregar Recurso");
         System.out.println("3. Eliminar Recurso");
-        System.out.println("4. Prestar Recurso");
-        System.out.println("5. Devolver Prestamo");
-        System.out.println("6. Renovar prestamo");
-        System.out.println("7. Buscar recursos");
-        System.out.println("8. Buscar por ID");
-        System.out.println("9. Cargar Recursos de Ejemplo");
-        System.out.println("10. Volver");
+        System.out.println("4. Buscar recursos");
+        System.out.println("5. Buscar por ID");
+        System.out.println("6. Cargar Recursos de Ejemplo");
+        System.out.println("7. Volver");
     }
 
     public static void opcionesRecursos() {
@@ -59,42 +56,11 @@ public class ConsolaRecursos {
                 System.out.println("Eliminar Recurso");
                 break;
             case 4:
-                System.out.println("- Prestar Recurso -");
-                System.out.println("ID del recurso a prestar: ");
-                String idStr = sc.nextLine();
-                try {
-                    Consola.gestorRecursos.prestarRecursoPorId(idStr);
-                } catch (Exception e) {
-                    System.out.println("Error: " + e.getMessage());
-                }
-                break;
-            case 5:
-                try{
-                    System.out.println("ID del recurso a devolver: ");
-                    String idStrDevolver = sc.nextLine();
-                    Consola.gestorRecursos.devolverRecursoPorId(idStrDevolver);
-                } catch (Exception e) {
-                    System.out.println("Error: " + e.getMessage());
-                }
-                break;
-            case 6:
-                try {
-                    System.out.println("ID del recurso a renovar: ");
-                    String idStrRenovar = sc.nextLine();
-                    Consola.gestorRecursos.renovarRecursoPorId(idStrRenovar);
-                } catch (Exception e) {
-                    System.out.println("Error: " + e.getMessage());
-                }
-                break;
-            case 7:
                 ConsolaUtils.menuBusquedaYOrden(sc, Consola.gestorRecursos);
                 break;
-            case 8:
-                System.out.print("Ingresar ID del recurso: ");
-                int idBuscado = sc.nextInt();
-                Consola.gestorRecursos.buscarYMostrarRecursoPorID(idBuscado);
+            case 5:
                 break;
-            case 9:
+            case 6:
                 System.out.println("Cargando recursos de ejemplo...");
 
                 Libro libro1 = new Libro(1, "Cien Años de Soledad", "Una novela de realismo mágico de Gabriel García Márquez.", "Libro", "978-3-16-148410-0", "Gabriel García Márquez", "Editorial XYZ", 1967);
@@ -108,12 +74,9 @@ public class ConsolaRecursos {
                 Revista revista1 = new Revista(3, "National Geographic - Especial Ciencia", "Revista de divulgación científica.", "Revista", "National Geographic", 122, LocalDate.of(2024, 4, 10));
                 Consola.gestorRecursos.agregarRecurso(revista1);
                 System.out.println("Ejemplo de Revista agregado.");
-
                 break;
-
-            case 10:
+            case 7:
                 break;
-
             default:
                 System.out.println("Opción no válida");
                 opcionesRecursos();
