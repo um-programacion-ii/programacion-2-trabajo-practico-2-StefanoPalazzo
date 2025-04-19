@@ -2,6 +2,9 @@ package models;
 
 import interfaces.Prestable;
 import interfaces.Renovable;
+import java.time.LocalDate;
+import exceptions.RecursoNoDisponibleException;
+
 
 public class Libro extends RecursoDigital implements Prestable, Renovable {
     private boolean prestado;
@@ -10,6 +13,11 @@ public class Libro extends RecursoDigital implements Prestable, Renovable {
     private String editorial;
     private int anio;
     private int cantPaginas;
+    private int diasPrestamo = 14;
+    private int renovacionesHechas = 0;
+    private final int MAX_RENOVACIONES = 2;
+    private LocalDate fechaPrestamo;
+    private LocalDate fechaDevolucion;
 
 
     public Libro(int id, String titulo, String descripcion, String categoria, String ISBN,String autor, String editorial, int anio, int cantPaginas) {
@@ -27,6 +35,8 @@ public class Libro extends RecursoDigital implements Prestable, Renovable {
         this.autor = autor;
         this.editorial = editorial;
         this.anio = anio;
+        prestado = false;
+
     }
 
     public int getISBN() {
@@ -72,6 +82,9 @@ public class Libro extends RecursoDigital implements Prestable, Renovable {
     @Override
     public void prestar() {
         prestado = true;
+        fechaPrestamo = LocalDate.now();
+        fechaDevolucion = fechaPrestamo.plusDays(diasPrestamo);
+        renovacionesHechas = 0;
     }
 
     @Override
@@ -85,8 +98,18 @@ public class Libro extends RecursoDigital implements Prestable, Renovable {
     }
 
     @Override
-    public void renovar() {
-        System.out.println("El libro ha sido renovado.");
+    public void renovar() throws RecursoNoDisponibleException {
+        if (renovacionesHechas >= MAX_RENOVACIONES) {
+            throw new RecursoNoDisponibleException("No se puede renovar más veces este libro.");
+        }
+        fechaDevolucion = fechaDevolucion.plusDays(diasPrestamo);
+        renovacionesHechas++;
+        System.out.println("El libro ha sido renovado. Nueva fecha de devolución: " + fechaDevolucion);
+    }
+
+
+    public LocalDate getFechaPrestamo() {
+        return fechaPrestamo;
     }
 
     @Override
@@ -99,5 +122,13 @@ public class Libro extends RecursoDigital implements Prestable, Renovable {
         System.out.println("Categoria: " + getCategoria());
         System.out.println("Anio: " + getAnio());
         System.out.println("CantPaginas: " + getCantPaginas());
+        if (prestado) {
+            System.out.println("Estado: Prestado");
+            System.out.println("Fecha de prestamo: " + fechaPrestamo);
+            System.out.println("Fecha de devolucion: " + fechaDevolucion);
+            System.out.println("Renovaciones: " + renovacionesHechas);
+        } else {
+            System.out.println("Estado: Disponible");
+        }
     }
 }

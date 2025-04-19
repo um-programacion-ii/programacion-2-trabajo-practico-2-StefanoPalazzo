@@ -29,8 +29,8 @@ public class ConsolaRecursos {
         System.out.println("2. Agregar Recurso");
         System.out.println("3. Eliminar Recurso");
         System.out.println("4. Prestar Recurso");
-        System.out.println("5. Devolver Recurso");
-        System.out.println("6. Renovar Recurso");
+        System.out.println("5. Devolver Prestamo");
+        System.out.println("6. Renovar prestamo");
         System.out.println("7. Buscar recursos");
         System.out.println("8. Buscar por ID");
         System.out.println("9. Cargar Recursos de Ejemplo");
@@ -59,13 +59,32 @@ public class ConsolaRecursos {
                 System.out.println("Eliminar Recurso");
                 break;
             case 4:
-                System.out.println("Prestar Recurso");
+                System.out.println("- Prestar Recurso -");
+                System.out.println("ID del recurso a prestar: ");
+                String idStr = sc.nextLine();
+                try {
+                    Consola.gestorRecursos.prestarRecursoPorId(idStr);
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
                 break;
             case 5:
-                System.out.println("Devolver Recurso");
+                try{
+                    System.out.println("ID del recurso a devolver: ");
+                    String idStrDevolver = sc.nextLine();
+                    Consola.gestorRecursos.devolverRecursoPorId(idStrDevolver);
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
                 break;
             case 6:
-                System.out.println("Renovar Recurso");
+                try {
+                    System.out.println("ID del recurso a renovar: ");
+                    String idStrRenovar = sc.nextLine();
+                    Consola.gestorRecursos.renovarRecursoPorId(idStrRenovar);
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
                 break;
             case 7:
                 ConsolaUtils.menuBusquedaYOrden(sc, Consola.gestorRecursos);
@@ -73,7 +92,7 @@ public class ConsolaRecursos {
             case 8:
                 System.out.print("Ingresar ID del recurso: ");
                 int idBuscado = sc.nextInt();
-                Consola.gestorRecursos.buscarRecursoPorId(idBuscado);
+                Consola.gestorRecursos.buscarYMostrarRecursoPorID(idBuscado);
                 break;
             case 9:
                 System.out.println("Cargando recursos de ejemplo...");

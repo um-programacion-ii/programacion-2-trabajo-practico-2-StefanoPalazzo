@@ -40,7 +40,7 @@ public class GestorUsuarios {
         }
     }
 
-    public List<Usuario> buscarUsuarioPorNombreOApellido(String textoBuscado) {
+    public List<Usuario> buscarUsuarioPorNombreOApellido(String textoBuscado) throws exceptions.UsuarioNoEncontradoException {
         List<Usuario> encontrados = new ArrayList<>();
         int index = 1;
 
@@ -54,21 +54,20 @@ public class GestorUsuarios {
         }
 
         if (encontrados.isEmpty()) {
-            System.out.println("No se encontraron usuarios con ese nombre o apellido.");
+            throw new exceptions.UsuarioNoEncontradoException("No se encontraron usuarios con ese nombre o apellido.");
         }
 
         return encontrados;
     }
 
-    public Usuario buscarUsuarioPorId(int idBuscado) {
+    public Usuario buscarUsuarioPorId(int idBuscado) throws exceptions.UsuarioNoEncontradoException {
         Usuario usuario = usuarios.get(idBuscado);
         if (usuario != null) {
             System.out.println("Usuario encontrado:");
             System.out.println("1 - " + usuario.getNombre() + " " + usuario.getApellido() + " (" + usuario.getId() + ")");
             return usuario;
         } else {
-            System.out.println("No se encontró ningún usuario con el ID ingresado.");
-            return null;
+            throw new exceptions.UsuarioNoEncontradoException("No se encontró un recurso con ID " + idBuscado);
         }
     }
 

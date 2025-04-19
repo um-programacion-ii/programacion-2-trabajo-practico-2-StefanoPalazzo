@@ -1,6 +1,8 @@
 package services;
 
 import interfaces.IServicioNotificaciones;
+import interfaces.Prestable;
+import interfaces.Renovable;
 import models.CategoriaRecurso;
 import models.RecursoDigital;
 
@@ -28,7 +30,7 @@ public class GestorRecursos {
 
     public void agregarRecurso(RecursoDigital r) {
         recursos.add(r);
-        System.out.println("✅ Recurso agregado: " + r.getTitulo());
+        System.out.println("Recurso agregado: " + r.getTitulo());
         servicioNotificaciones.enviarNotificacion("RecursoDigital " + r.getTitulo() + " agregado con éxito.");
     }
 
@@ -36,16 +38,81 @@ public class GestorRecursos {
         servicioNotificaciones.enviarNotificacion("RecursoDigital " + r.getTitulo() + " eliminado con éxito.");
     }
 
-    public void prestarRecurso(RecursoDigital r) {
-        servicioNotificaciones.enviarNotificacion("RecursoDigital " + r.getTitulo() + " prestado con éxito.");
+    public void prestarRecursoPorId(String idStr) throws exceptions.RecursoNoDisponibleException {
+        try {
+            int id = Integer.parseInt(idStr);
+            RecursoDigital recurso = buscarRecursoPorId(id);
+
+            if (recurso == null) {
+                throw new exceptions.RecursoNoDisponibleException("No se encontró un recurso con ID " + id);
+            }
+
+            if (!(recurso instanceof Prestable recursoPrestable)) {
+                throw new exceptions.RecursoNoDisponibleException("Este tipo de recurso no puede ser prestado.");
+            }
+
+            if (recursoPrestable.estaPrestado()) {
+                throw new exceptions.RecursoNoDisponibleException("El recurso ya está prestado.");
+            }
+
+            recursoPrestable.prestar();
+            servicioNotificaciones.enviarNotificacion("RecursoDigital " + recurso.getTitulo() + " prestado con éxito.");
+            System.out.println("✅ Recurso prestado con éxito: " + recurso.getTitulo());
+
+        } catch (NumberFormatException e) {
+            System.out.println("El ID ingresado no es un número válido.");
+        }
     }
 
-    public void devolverRecurso(RecursoDigital r) {
-        servicioNotificaciones.enviarNotificacion("RecursoDigital " + r.getTitulo() + " devuelto con éxito.");
+    public void devolverRecursoPorId(String idStr) throws exceptions.RecursoNoDisponibleException {
+        try {
+            int id = Integer.parseInt(idStr);
+            RecursoDigital recurso = buscarRecursoPorId(id);
+
+            if (recurso == null) {
+                throw new exceptions.RecursoNoDisponibleException("No se encontró un recurso con ID " + id);
+            }
+
+            if (!(recurso instanceof Prestable recursoPrestable)) {
+                throw new exceptions.RecursoNoDisponibleException("Este tipo de recurso no puede ser devuelto.");
+            }
+
+            if (!recursoPrestable.estaPrestado()) {
+                throw new exceptions.RecursoNoDisponibleException("El recurso no está prestado actualmente.");
+            }
+
+            recursoPrestable.devolver();
+            servicioNotificaciones.enviarNotificacion("RecursoDigital " + recurso.getTitulo() + " devuelto con éxito.");
+            System.out.println("Recurso devuelto con éxito: " + recurso.getTitulo());
+
+        } catch (NumberFormatException e) {
+            System.out.println("El ID ingresado no es un número válido.");
+        }
     }
 
-    public void renovarRecurso(RecursoDigital r) {
-        servicioNotificaciones.enviarNotificacion("RecursoDigital " + r.getTitulo() + " renovado con éxito.");
+
+    public void renovarRecursoPorId(String idStr) throws exceptions.RecursoNoDisponibleException {
+        try {
+            int id = Integer.parseInt(idStr);
+            RecursoDigital recurso = buscarRecursoPorId(id);
+
+            if (recurso == null) {
+                throw new exceptions.RecursoNoDisponibleException("No se encontró un recurso con ID " + id);
+            }
+
+            if (!((Prestable) recurso).estaPrestado()) {
+                throw new exceptions.RecursoNoDisponibleException("El recurso no está prestado actualmente.");
+            }
+
+            if (!(recurso instanceof Renovable recursoRenovable)) {
+                throw new exceptions.RecursoNoDisponibleException("Este tipo de recurso no puede ser renovado.");
+            }
+
+            recursoRenovable.renovar();
+            servicioNotificaciones.enviarNotificacion("RecursoDigital " + recurso.getTitulo() + " renovado con éxito.");
+        } catch (NumberFormatException e) {
+            System.out.println("El ID ingresado no es un número válido.");
+        }
     }
 
     public List<RecursoDigital> buscarRecursoPorTitulo(String texto) {
@@ -75,6 +142,20 @@ public class GestorRecursos {
         System.out.println("No se encontró ningún recurso con el ID ingresado.");
         return null;
     }
+
+    public RecursoDigital buscarYMostrarRecursoPorID(int idBuscado) {
+        for (int i = 0; i < recursos.size(); i++) {
+            RecursoDigital recurso = recursos.get(i);
+            if (recurso.getId() == idBuscado) {
+                System.out.println("Recurso encontrado:");
+                recurso.mostrarInformacion();
+                return recurso;
+            }
+        }
+        System.out.println("No se encontró ningún recurso con el ID ingresado.");
+        return null;
+    }
+
 
     public List<RecursoDigital> ordenarPorTitulo() {
         return recursos.stream()

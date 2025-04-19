@@ -1,5 +1,7 @@
 package interfaces;
 
+import exceptions.RecursoNoDisponibleException;
+
 public interface Renovable {
-    void renovar();
+    void renovar() throws RecursoNoDisponibleException;
 }
