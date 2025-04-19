@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class GestorUsuarios {
     private IServicioNotificaciones servicioNotificaciones;
-    private Map<Integer, Usuario> usuarios = new HashMap<>();
+    private static Map<Integer, Usuario> usuarios = new HashMap<>();
 
     public GestorUsuarios(IServicioNotificaciones servicioNotificaciones) {
         this.servicioNotificaciones = servicioNotificaciones;
@@ -60,14 +60,14 @@ public class GestorUsuarios {
         return encontrados;
     }
 
-    public Usuario buscarUsuarioPorId(int idBuscado) throws exceptions.UsuarioNoEncontradoException {
+    public static Usuario buscarUsuarioPorId(int idBuscado) throws exceptions.UsuarioNoEncontradoException {
         Usuario usuario = usuarios.get(idBuscado);
         if (usuario != null) {
             System.out.println("Usuario encontrado:");
             System.out.println("1 - " + usuario.getNombre() + " " + usuario.getApellido() + " (" + usuario.getId() + ")");
             return usuario;
         } else {
-            throw new exceptions.UsuarioNoEncontradoException("No se encontró un recurso con ID " + idBuscado);
+            throw new exceptions.UsuarioNoEncontradoException("No se encontró un usuario con ID " + idBuscado);
         }
     }
 
