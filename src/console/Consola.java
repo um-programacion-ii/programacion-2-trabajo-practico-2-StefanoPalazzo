@@ -13,10 +13,12 @@ public class Consola {
     public static GestorRecursos gestorRecursos;
     public static GestorPrestamos gestorPrestamos;
     public static GestorReservas gestorReservas;
+    public static GestorNotificaciones gestorNotificaciones;
     public static boolean ejecutando = true;
 
     public static void main(String[] args) {
         ServicioNotificacionesEmail servicioNotificacionesEmail = new ServicioNotificacionesEmail();
+        gestorNotificaciones = new GestorNotificaciones(servicioNotificacionesEmail);
         gestorUsuarios = new GestorUsuarios(servicioNotificacionesEmail);
         gestorRecursos = new GestorRecursos(servicioNotificacionesEmail);
         gestorPrestamos = new GestorPrestamos(servicioNotificacionesEmail);
@@ -33,6 +35,7 @@ public class Consola {
         mostrarMenuPrincipal();
         opcionesMenuPrincipal();
         }
+        gestorNotificaciones.cerrar();
     }
 
     public static void mostrarMenuPrincipal() {
