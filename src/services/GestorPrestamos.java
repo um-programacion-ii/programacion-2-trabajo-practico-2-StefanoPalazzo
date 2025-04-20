@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GestorPrestamos {
-    private List<Prestamo> prestamosTotales = new ArrayList<>();
-    private List<Prestamo> prestamosActivos = new ArrayList<>();
-    private IServicioNotificaciones servicioNotificaciones;
+    private static List<Prestamo> prestamosTotales = new ArrayList<>();
+    private static List<Prestamo> prestamosActivos = new ArrayList<>();
+    private static IServicioNotificaciones servicioNotificaciones;
 
     public GestorPrestamos(IServicioNotificaciones servicioNotificaciones){
         this.servicioNotificaciones = servicioNotificaciones;
@@ -23,7 +23,7 @@ public class GestorPrestamos {
         this.prestamosActivos = new ArrayList<>();
 
     }
-    public Prestamo prestarRecurso(int idRecurso, int idUsuario) throws RecursoNoDisponibleException, UsuarioNoEncontradoException {
+    public static Prestamo prestarRecurso(int idRecurso, int idUsuario) throws RecursoNoDisponibleException, UsuarioNoEncontradoException {
         RecursoDigital recurso = GestorRecursos.buscarRecursoPorId(idRecurso);
         Usuario usuario = GestorUsuarios.buscarUsuarioPorId(idUsuario);
 
