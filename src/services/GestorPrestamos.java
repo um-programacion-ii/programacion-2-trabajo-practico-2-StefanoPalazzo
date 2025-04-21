@@ -10,11 +10,13 @@ import models.Usuario;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GestorPrestamos {
-    private static List<Prestamo> prestamosTotales = new ArrayList<>();
-    private static List<Prestamo> prestamosActivos = new ArrayList<>();
+    private static List<Prestamo> prestamosTotales = Collections.synchronizedList(new ArrayList<>());
+    private static List<Prestamo> prestamosActivos = Collections.synchronizedList(new ArrayList<>());
+
     private static IServicioNotificaciones servicioNotificaciones;
 
     public GestorPrestamos(IServicioNotificaciones servicioNotificaciones){
@@ -22,11 +24,13 @@ public class GestorPrestamos {
         this.prestamosTotales = new ArrayList<>();
         this.prestamosActivos = new ArrayList<>();
 
+
     }
-    public static Prestamo prestarRecurso(int idRecurso, int idUsuario) throws RecursoNoDisponibleException, UsuarioNoEncontradoException {
+    public synchronized static Prestamo prestarRecurso(int idRecurso, int idUsuario) throws RecursoNoDisponibleException, UsuarioNoEncontradoException {
+        System.out.println(Thread.currentThread().getName() + " - Intentando prestar recurso ID: " + idRecurso);
         RecursoDigital recurso = GestorRecursos.buscarRecursoPorId(idRecurso);
         Usuario usuario = GestorUsuarios.buscarUsuarioPorId(idUsuario);
-
+        System.out.println(Thread.currentThread().getName() + " - Dentro de la sección sincronizada.");
         if (recurso == null) {
             throw new RecursoNoDisponibleException("Recurso no válido.");
         }
@@ -35,22 +39,29 @@ public class GestorPrestamos {
             throw new exceptions.RecursoNoDisponibleException("Este tipo de recurso no puede ser prestado.");
         }
 
-        if (recursoPrestable.estaPrestado()) {
-            throw new RecursoNoDisponibleException("El recurso ya está prestado.");
+
+        Prestamo nuevoPrestamo;
+        synchronized (recursoPrestable) {
+            if (recursoPrestable.estaPrestado()) {
+                throw new RecursoNoDisponibleException("El recurso ya está prestado.");
+            }
+            nuevoPrestamo = new Prestamo(recurso, usuario);
+            recursoPrestable.prestar();
         }
 
-        Prestamo nuevoPrestamo = new Prestamo(recurso, usuario);
-        recursoPrestable.prestar();
         nuevoPrestamo.setFechaDevolucion();
         prestamosTotales.add(nuevoPrestamo);
         prestamosActivos.add(nuevoPrestamo);
         servicioNotificaciones.enviarNotificacion("RecursoDigital " + recurso.getTitulo() +
                 " ( " + recurso.getId() + " ) " + " prestado a " +
                 usuario.getNombre() + " " + usuario.getApellido() + " ( " + usuario.getId() + " ) ");
+        System.out.println(Thread.currentThread().getName() + " - Préstamo realizado con éxito.");
         return nuevoPrestamo;
     }
 
-    public void devolverPrestamo(int idPrestamo) throws RecursoNoDisponibleException {
+    public synchronized void devolverPrestamo(int idPrestamo) throws RecursoNoDisponibleException {
+        System.out.println(Thread.currentThread().getName() + " - Intentando devolver préstamo ID: " + idPrestamo);
+
         Prestamo prestamo = prestamosActivos.stream()
                 .filter(p -> p.getId() == idPrestamo && !p.isDevuelto())
                 .findFirst()
@@ -80,12 +91,13 @@ public class GestorPrestamos {
                 "RecursoDigital " + recurso.getTitulo() + " devuelto con éxito por " +
                         usuario.getNombre() + " " + usuario.getApellido());
 
-        System.out.println("Recurso devuelto con éxito: " + recurso.getTitulo());
+        System.out.println(Thread.currentThread().getName() + " - Préstamo devuelto con éxito: " + recurso.getTitulo());
+
     }
 
 
 
-    public void renovarPrestamo(int idPrestamo) throws RecursoNoDisponibleException {
+    public synchronized void renovarPrestamo(int idPrestamo) throws RecursoNoDisponibleException {
         Prestamo prestamo = prestamosActivos.stream()
                 .filter(p -> p.getId() == idPrestamo && !p.isDevuelto())
                 .findFirst()

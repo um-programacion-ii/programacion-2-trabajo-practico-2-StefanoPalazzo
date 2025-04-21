@@ -8,17 +8,20 @@ import models.Prestamo;
 import models.RecursoDigital;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class GestorRecursos {
-    private static ArrayList<RecursoDigital> recursos = new ArrayList<>();
+    private static List<RecursoDigital> recursos = Collections.synchronizedList(new ArrayList<>());
+
     private IServicioNotificaciones servicioNotificaciones;
 
     public GestorRecursos(IServicioNotificaciones servicioNotificaciones) {
         this.servicioNotificaciones = servicioNotificaciones;
         this.recursos = new ArrayList<>();
+
 
     }
 
@@ -29,39 +32,25 @@ public class GestorRecursos {
         }
     }
 
-    public void agregarRecurso(RecursoDigital r) {
+    public synchronized void agregarRecurso(RecursoDigital r) {
+        System.out.println(Thread.currentThread().getName() + " - Intentando agregar recurso: " + r.getTitulo());
         recursos.add(r);
-        System.out.println("Recurso agregado: " + r.getTitulo());
         servicioNotificaciones.enviarNotificacion("RecursoDigital " + r.getTitulo() + " agregado con éxito.");
+        System.out.println(Thread.currentThread().getName() + " - Recurso agregado: " + r.getTitulo());
     }
 
-    public void eliminarRecurso(RecursoDigital r) {
-        servicioNotificaciones.enviarNotificacion("RecursoDigital " + r.getTitulo() + " eliminado con éxito.");
-    }
-
-
-    public void renovarRecursoPorId(String idStr) throws exceptions.RecursoNoDisponibleException {
-        try {
-            int id = Integer.parseInt(idStr);
-            RecursoDigital recurso = buscarRecursoPorId(id);
-
-            if (recurso == null) {
-                throw new exceptions.RecursoNoDisponibleException("No se encontró un recurso con ID " + id);
+    public synchronized void eliminarRecursoPorId(int id) {
+        System.out.println(Thread.currentThread().getName() + " - Intentando eliminar recurso con ID: " + id);
+        for (int i = 0; i < recursos.size(); i++) {
+            RecursoDigital r = recursos.get(i);
+            if (r.getId() == id) {
+                recursos.remove(i);
+                System.out.println(Thread.currentThread().getName() + " - Recurso eliminado: " + r.getTitulo());
+                servicioNotificaciones.enviarNotificacion("RecursoDigital " + r.getTitulo() + " eliminado con éxito.");
+                return;
             }
-
-            if (!((Prestable) recurso).estaPrestado()) {
-                throw new exceptions.RecursoNoDisponibleException("El recurso no está prestado actualmente.");
-            }
-
-            if (!(recurso instanceof Renovable recursoRenovable)) {
-                throw new exceptions.RecursoNoDisponibleException("Este tipo de recurso no puede ser renovado.");
-            }
-
-            recursoRenovable.renovar();
-            servicioNotificaciones.enviarNotificacion("RecursoDigital " + recurso.getTitulo() + " renovado con éxito.");
-        } catch (NumberFormatException e) {
-            System.out.println("El ID ingresado no es un número válido.");
         }
+        System.out.println(Thread.currentThread().getName() + " - No se encontró ningún recurso con el ID ingresado.");
     }
 
     public List<RecursoDigital> buscarRecursoPorTitulo(String texto) {
