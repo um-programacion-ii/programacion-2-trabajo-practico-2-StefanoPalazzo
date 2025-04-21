@@ -1,5 +1,6 @@
 package services;
 
+import console.ConsolaUsuarios;
 import interfaces.IServicioNotificaciones;
 import models.Usuario;
 
@@ -24,7 +25,7 @@ public class GestorUsuarios {
         servicioNotificaciones.enviarNotificacion("Listado de usuarios mostrado correctamente.");
     }
 
-    public void agregarUsuario(Usuario usuario) {
+    public static void agregarUsuario(Usuario usuario) {
         usuarios.put(usuario.getId(), usuario);
         System.out.println("Usuario agregado: "+ usuario.getNombre() + " " + usuario.getApellido() + "(" + usuario.getId() + ")");
     }
@@ -71,6 +72,21 @@ public class GestorUsuarios {
         }
     }
 
+    public static void crearUsuariosDePrueba() {
+        List<Usuario> usuariosDePrueba = List.of(
+            new Usuario(1, "Juan", "Pérez", "juan.perez@example.com"),
+            new Usuario(2, "María", "Gómez", "maria.gomez@example.com"),
+            new Usuario(3, "Carlos", "López", "carlos.lopez@example.com"),
+            new Usuario(4, "Ana", "Martínez", "ana.martinez@example.com"),
+            new Usuario(5, "Luis", "Fernández", "luis.fernandez@example.com")
+        );
+
+        for (Usuario usuario : usuariosDePrueba) {
+            GestorUsuarios.agregarUsuario(usuario);
+        }
+
+        System.out.println("Usuarios de prueba creados y registrados exitosamente.");
+    }
 
 
 }

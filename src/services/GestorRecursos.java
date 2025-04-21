@@ -25,7 +25,7 @@ public class GestorRecursos {
     public void listarRecursos() {
         System.out.println("Lista de Recursos:");
         for (RecursoDigital r : recursos) {
-            System.out.println("- " + r.getTitulo());
+            System.out.println(r.getId() + ". " + r.getTitulo());
         }
     }
 
