@@ -44,7 +44,8 @@ public class Consola {
         System.out.println("2. Gestor Recursos");
         System.out.println("3. Gestor Prestamos");
         System.out.println("4. Gestor Reservas");
-        System.out.println("5. Salir");
+        System.out.println("5. Reportes");
+        System.out.println("6. Salir");
     }
 
     public static void opcionesMenuPrincipal() {
@@ -64,6 +65,9 @@ public class Consola {
                 ConsolaReservas.MenuReservas();
                 break;
             case 5:
+                ConsolaReportes.MenuReportes();
+                break;
+            case 6:
                 System.out.println("Saliendo...");
                 ejecutando = false;
                 break;

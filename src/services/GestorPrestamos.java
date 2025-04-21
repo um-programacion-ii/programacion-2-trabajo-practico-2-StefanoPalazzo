@@ -4,6 +4,7 @@ import exceptions.RecursoNoDisponibleException;
 import exceptions.UsuarioNoEncontradoException;
 import interfaces.IServicioNotificaciones;
 import interfaces.Prestable;
+import models.CategoriaRecurso;
 import models.Prestamo;
 import models.RecursoDigital;
 import models.Usuario;
@@ -11,6 +12,9 @@ import models.Usuario;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class GestorPrestamos {
     private static List<Prestamo> prestamosTotales = new ArrayList<>();
@@ -121,5 +125,45 @@ public class GestorPrestamos {
                     + (prestamo.getFechaDevolucion() != null ? prestamo.getFechaDevolucion() : "No devuelto aún"));
         }
     }
+    public void reporteRecursosMasPrestados() {
+        Map<RecursoDigital, Long> conteo = prestamosTotales.stream()
+                .collect(Collectors.groupingBy(Prestamo::getRecurso, Collectors.counting()));
+
+        System.out.println("📚 Recursos más prestados:");
+        AtomicInteger contador = new AtomicInteger(1);
+        conteo.entrySet().stream()
+                .sorted(Map.Entry.<RecursoDigital, Long>comparingByValue().reversed())
+                .limit(5)
+                .forEach(entry -> System.out.println(
+                        contador.getAndIncrement() + ". " + entry.getKey().getTitulo() + " - " + entry.getValue() + " préstamos"));
+    }
+
+    public void reporteUsuariosMasActivos() {
+        Map<Usuario, Long> conteo = prestamosTotales.stream()
+                .collect(Collectors.groupingBy(Prestamo::getUsuario, Collectors.counting()));
+
+        System.out.println("👤 Usuarios más activos:");
+        AtomicInteger contador = new AtomicInteger(1);
+        conteo.entrySet().stream()
+                .sorted(Map.Entry.<Usuario, Long>comparingByValue().reversed())
+                .limit(5)
+                .forEach(entry -> System.out.println(
+                        contador.getAndIncrement() + ". " + entry.getKey().getNombre() + " " + entry.getKey().getApellido()
+                                + " - " + entry.getValue() + " préstamos"));
+    }
+
+
+    public void estadisticasPorCategoria() {
+        Map<CategoriaRecurso, Long> conteoPorCategoria = prestamosTotales.stream()
+                .collect(Collectors.groupingBy(
+                        p -> p.getRecurso().getCategoria(), Collectors.counting()
+                ));
+
+        System.out.println("📊 Estadísticas por categoría:");
+        conteoPorCategoria.forEach((categoria, cantidad) -> {
+            System.out.println(categoria + ": " + cantidad + " préstamos");
+        });
+    }
+
 
 }
