@@ -53,7 +53,15 @@ public class ConsolaRecursos {
                 menuAgregarRecurso(sc, opcion);
                 break;
             case 3:
-                System.out.println("Eliminar Recurso");
+                System.out.println("-Eliminar Recurso-");
+                System.out.println("Ingrese ID del recurso a eliminar");
+                int idEliminar = Integer.parseInt(sc.nextLine());
+                try {
+                    Consola.gestorRecursos.eliminarRecursoPorId(idEliminar);
+                    System.out.println("Recurso eliminado exitosamente.");
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
                 break;
             case 4:
                 ConsolaUtils.menuBusquedaYOrden(sc, Consola.gestorRecursos);

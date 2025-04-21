@@ -19,7 +19,8 @@ public class GestorReservas {
         this.servicioNotificaciones = servicioNotificaciones;
     }
 
-    public static void agregarReserva(int idRecurso, int idUsuario) throws RecursoNoDisponibleException {
+    public synchronized static void agregarReserva(int idRecurso, int idUsuario) throws RecursoNoDisponibleException {
+        System.out.println(Thread.currentThread().getName() + " - Intentando agregar reserva para recurso ID: " + idRecurso + " y usuario ID: " + idUsuario);
         RecursoDigital recurso = GestorRecursos.buscarRecursoPorId(idRecurso);
         Usuario usuario;
 
@@ -35,7 +36,7 @@ public class GestorReservas {
         }
         Reserva reserva = new Reserva(usuario, recurso);
         colaReservas.add(reserva);
-        System.out.println("Reserva agregada a la cola: " + reserva);
+        System.out.println(Thread.currentThread().getName() + " - Reserva agregada con éxito: " + reserva);
     }
 
     public static Reserva obtenerProximaReservaDeRecurso(int idRecurso) {
@@ -77,10 +78,6 @@ public class GestorReservas {
         for (Reserva reserva : colaReservas) {
             System.out.println(reserva.toString());
         }
-    }
-
-    public static boolean hayReservasPendientes() {
-        return !colaReservas.isEmpty();
     }
 
     public static Reserva buscarReservaPorId(int id) {
