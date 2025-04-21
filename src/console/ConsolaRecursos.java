@@ -52,15 +52,16 @@ public class ConsolaRecursos {
                 menuAgregarRecurso(sc, opcion);
                 break;
             case 3:
-                System.out.println("- Eliminar Recurso -");
-                System.out.println("ID del recurso a eliminar: ");
-                int idRecurso = Integer.parseInt(sc.nextLine());
-                RecursoDigital recurso = Consola.gestorRecursos.buscarRecursoPorId(idRecurso);
-                if (recurso != null) {
-                    Consola.gestorRecursos.eliminarRecurso(recurso);
+
+                System.out.println("-Eliminar Recurso-");
+                System.out.println("Ingrese ID del recurso a eliminar");
+                int idEliminar = Integer.parseInt(sc.nextLine());
+                try {
+                    Consola.gestorRecursos.eliminarRecursoPorId(idEliminar);
                     System.out.println("Recurso eliminado exitosamente.");
-                } else {
-                    System.out.println("No se encontró un recurso con ID " + idRecurso);
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+
                 }
                 break;
             case 4:

@@ -25,18 +25,23 @@ public class GestorUsuarios {
         servicioNotificaciones.enviarNotificacion("Listado de usuarios mostrado correctamente.");
     }
 
-    public static void agregarUsuario(Usuario usuario) {
+
+    public synchronized void agregarUsuario(Usuario usuario) {
+        System.out.println(Thread.currentThread().getName() + " - Intentando agregar usuario: " + usuario.getNombre() + " " + usuario.getApellido());
         usuarios.put(usuario.getId(), usuario);
-        System.out.println("Usuario agregado: "+ usuario.getNombre() + " " + usuario.getApellido() + "(" + usuario.getId() + ")");
+        System.out.println(Thread.currentThread().getName() + " - Usuario agregado: "+ usuario.getNombre() + " " + usuario.getApellido() + "(" + usuario.getId() + ")");
     }
 
-    public void eliminarUsuario(int id) {
+    public synchronized void eliminarUsuario(int id) {
+        System.out.println(Thread.currentThread().getName() + " - Intentando eliminar usuario con ID: " + id);
         if (usuarios.containsKey(id)){
             Usuario u = usuarios.get(id);
             String nombre = u.getNombre() + " " + u.getApellido() + "(" + u.getId() + ")";
             usuarios.remove(id);
             servicioNotificaciones.enviarNotificacion("Usuario " + nombre + " eliminado con éxito.");
+            System.out.println(Thread.currentThread().getName() + " - Usuario eliminado: " + nombre);
         } else {
+            System.out.println(Thread.currentThread().getName() + " - No se encontró ningún usuario con el ID ingresado.");
             servicioNotificaciones.enviarNotificacion("Usuario no encontrado.");
         }
     }
