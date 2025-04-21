@@ -1,9 +1,6 @@
 package console;
 
-import models.Audiolibro;
-import models.Libro;
-import models.Revista;
-import models.Usuario;
+import models.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -48,11 +45,14 @@ public class ConsolaRecursos {
                 System.out.println("1. Libro");
                 System.out.println("2. Audiolibro");
                 System.out.println("3. Revista");
+                System.out.println("4. Enciclopedia");
+                System.out.println("5. Volver");
                 opcion = sc.nextInt();
                 sc.nextLine();
                 menuAgregarRecurso(sc, opcion);
                 break;
             case 3:
+
                 System.out.println("-Eliminar Recurso-");
                 System.out.println("Ingrese ID del recurso a eliminar");
                 int idEliminar = Integer.parseInt(sc.nextLine());
@@ -61,27 +61,38 @@ public class ConsolaRecursos {
                     System.out.println("Recurso eliminado exitosamente.");
                 } catch (Exception e) {
                     System.out.println("Error: " + e.getMessage());
+
                 }
                 break;
             case 4:
                 ConsolaUtils.menuBusquedaYOrden(sc, Consola.gestorRecursos);
                 break;
             case 5:
-                break;
+                System.out.println("ID del recurso a buscar: ");
+                int id = Integer.parseInt(sc.nextLine());
+                RecursoDigital recursoBuscado = Consola.gestorRecursos.buscarRecursoPorId(id);
             case 6:
                 System.out.println("Cargando recursos de ejemplo...");
 
                 Libro libro1 = new Libro(1, "Cien Años de Soledad", "Una novela de realismo mágico de Gabriel García Márquez.", "Libro", "978-3-16-148410-0", "Gabriel García Márquez", "Editorial XYZ", 1967);
                 Consola.gestorRecursos.agregarRecurso(libro1);
-                System.out.println("Ejemplo de Libro agregado.");
 
-                Audiolibro audiolibro1 = new Audiolibro(2, "El Hobbit - Audiolibro", "Narración de la famosa novela de J.R.R. Tolkien.", "Audiolibro", "J.R.R. Tolkien", 300, "Narrador 1");
+                Libro libro2 = new Libro(2, "1984", "Una novela distópica de George Orwell.", "Libro", "978-0-452-28423-4", "George Orwell", "Editorial ABC", 1949);
+                Consola.gestorRecursos.agregarRecurso(libro2);
+
+                Audiolibro audiolibro1 = new Audiolibro(3, "El Hobbit - Audiolibro", "Narración de la famosa novela de J.R.R. Tolkien.", "Audiolibro", "J.R.R. Tolkien", 300, "Narrador 1");
                 Consola.gestorRecursos.agregarRecurso(audiolibro1);
-                System.out.println("Ejemplo de Audiolibro agregado.");
 
-                Revista revista1 = new Revista(3, "National Geographic - Especial Ciencia", "Revista de divulgación científica.", "Revista", "National Geographic", 122, LocalDate.of(2024, 4, 10));
+                Revista revista1 = new Revista(4, "National Geographic - Especial Ciencia", "Revista de divulgación científica.", "Revista", "National Geographic", 122, LocalDate.of(2024, 4, 10));
                 Consola.gestorRecursos.agregarRecurso(revista1);
-                System.out.println("Ejemplo de Revista agregado.");
+
+                Enciclopedia enciclopedia1 = new Enciclopedia(5, "Enciclopedia de Ciencias", "Una enciclopedia completa sobre ciencias naturales.", "Enciclopedia", "Dr. Juan Pérez", "Editorial Alfa", 2020, 1);
+                Enciclopedia enciclopedia2 = new Enciclopedia(6, "Enciclopedia de Historia Universal", "Explora los eventos más importantes de la historia.", "Enciclopedia", "Dra. María López", "Editorial Beta", 2018, 2);
+                Enciclopedia enciclopedia3 = new Enciclopedia(7, "Enciclopedia de Tecnología", "Información detallada sobre avances tecnológicos.", "Enciclopedia", "Ing. Carlos Gómez", "Editorial Gamma", 2022, 3);
+                Consola.gestorRecursos.agregarRecurso(enciclopedia1);
+                Consola.gestorRecursos.agregarRecurso(enciclopedia2);
+                Consola.gestorRecursos.agregarRecurso(enciclopedia3);
+
                 break;
             case 7:
                 break;
@@ -177,6 +188,39 @@ public class ConsolaRecursos {
                 Revista revista = new Revista(idRevista, tituloRevista, descRevista, categoria, editorial, edicion, fechaPublicacion);
                 Consola.gestorRecursos.agregarRecurso(revista);
                 System.out.println("Revista agregada exitosamente.");
+                break;
+
+            case 4: // Enciclopedia
+                System.out.println("- Enciclopedia -");
+                System.out.print("ID: ");
+                int idEnciclopedia = Integer.parseInt(sc.nextLine());
+
+                System.out.print("Título: ");
+                String tituloEnciclopedia = sc.nextLine();
+
+                System.out.print("Descripción: ");
+                String descEnciclopedia = sc.nextLine();
+
+                categoria = "Enciclopedia";
+
+                System.out.print("Autor General: ");
+                autor = sc.nextLine();
+
+                System.out.print("Editorial: ");
+                editorial = sc.nextLine();
+
+                System.out.print("Año: ");
+                int anioEnciclopedia = Integer.parseInt(sc.nextLine());
+
+                System.out.print("Volumen: ");
+                int volumen = Integer.parseInt(sc.nextLine());
+
+                System.out.print("Tomo: ");
+                int tomo = Integer.parseInt(sc.nextLine());
+
+                Enciclopedia enciclopedia = new Enciclopedia(idEnciclopedia, tituloEnciclopedia, descEnciclopedia, categoria, autor, editorial, anioEnciclopedia, volumen);
+                Consola.gestorRecursos.agregarRecurso(enciclopedia);
+                System.out.println("Enciclopedia agregada exitosamente.");
                 break;
 
             default:

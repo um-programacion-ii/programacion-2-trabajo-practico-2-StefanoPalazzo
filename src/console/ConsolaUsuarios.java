@@ -17,7 +17,8 @@ public class ConsolaUsuarios {
         System.out.println("3. Eliminar Usuario");
         System.out.println("4. Buscar usuario por nombre");
         System.out.println("5. Buscar usuario por ID");
-        System.out.println("6. Volver");
+        System.out.println("6. Cargar usuarios de ejemplo");
+        System.out.println("7. Volver");
     }
 
     public static void opcionesUsuarios() {
@@ -66,7 +67,12 @@ public class ConsolaUsuarios {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
+                break;
             case 6:
+                System.out.println("- Cargar usuarios de ejemplo -");
+                Consola.gestorUsuarios.crearUsuariosDePrueba();
+                break;
+            case 7:
                 break;
             default:
                 System.out.println("Opción no válida");

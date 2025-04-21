@@ -4,6 +4,7 @@ public enum CategoriaRecurso {
     LIBRO,
     REVISTA,
     AUDIOLIBRO,
+    ENCICLOPEDIA,
     OTRO;
 
     public static void mostrarCategorias() {
