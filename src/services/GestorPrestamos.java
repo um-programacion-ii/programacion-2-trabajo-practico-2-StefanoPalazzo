@@ -28,8 +28,16 @@ public class GestorPrestamos {
         this.prestamosTotales = new ArrayList<>();
         this.prestamosActivos = new ArrayList<>();
 
-
     }
+
+    public List<Prestamo> getPrestamosTotales() {
+        return prestamosTotales;
+    }
+
+    public List<Prestamo> getPrestamosActivos() {
+        return prestamosActivos;
+    }
+
     public synchronized static Prestamo prestarRecurso(int idRecurso, int idUsuario) throws RecursoNoDisponibleException, UsuarioNoEncontradoException {
         System.out.println(Thread.currentThread().getName() + " - Intentando prestar recurso ID: " + idRecurso);
         RecursoDigital recurso = GestorRecursos.buscarRecursoPorId(idRecurso);

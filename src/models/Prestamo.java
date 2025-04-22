@@ -22,6 +22,15 @@ public class Prestamo {
         this.devuelto = false;
         this.diasPrestamo = 7;
     }
+    public Prestamo(RecursoDigital recurso, Usuario usuario, LocalDate fechaDevolucion) {
+        this.id = contadorPrestamos++;
+        this.recurso = recurso;
+        this.usuario = usuario;
+        this.fechaPrestamo = LocalDate.now();
+        this.fechaDevolucion = fechaDevolucion;
+        this.devuelto = false;
+        this.diasPrestamo = 7;
+    }
 
     public int getId() {
         return id;
