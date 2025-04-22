@@ -26,7 +26,7 @@ public class GestorUsuarios {
     }
 
 
-    public synchronized void agregarUsuario(Usuario usuario) {
+    public static synchronized void agregarUsuario(Usuario usuario) {
         System.out.println(Thread.currentThread().getName() + " - Intentando agregar usuario: " + usuario.getNombre() + " " + usuario.getApellido());
         usuarios.put(usuario.getId(), usuario);
         System.out.println(Thread.currentThread().getName() + " - Usuario agregado: "+ usuario.getNombre() + " " + usuario.getApellido() + "(" + usuario.getId() + ")");

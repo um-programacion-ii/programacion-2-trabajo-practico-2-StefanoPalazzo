@@ -104,9 +104,16 @@ public class Libro extends RecursoDigital implements Prestable, Renovable {
         System.out.println("El libro ha sido renovado. Nueva fecha de devolución: " + fechaDevolucion);
     }
 
-
     public LocalDate getFechaPrestamo() {
         return fechaPrestamo;
+    }
+
+    public void setFechaPrestamo(LocalDate fechaPrestamo) {
+        this.fechaPrestamo = fechaPrestamo;
+    }
+
+    public void setFechaDevolucion(LocalDate fechaDevolucion) {
+        this.fechaDevolucion = fechaDevolucion;
     }
 
     @Override
