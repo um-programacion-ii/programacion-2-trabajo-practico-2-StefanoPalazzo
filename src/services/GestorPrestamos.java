@@ -165,44 +165,119 @@ public class GestorPrestamos {
         }
     }
     public void reporteRecursosMasPrestados() {
+        // Crear el mapa de conteo de recursos
         Map<RecursoDigital, Long> conteo = prestamosTotales.stream()
                 .collect(Collectors.groupingBy(Prestamo::getRecurso, Collectors.counting()));
 
         System.out.println("📚 Recursos más prestados:");
+
+        // Inicializar contador para los recursos y obtener el total de recursos
         AtomicInteger contador = new AtomicInteger(1);
+        int totalRecursos = conteo.size();
+
+        // Mostrar mensaje de generación de reporte
+        System.out.println("Generando reporte...");
+
+        // Mostrar progreso hasta el 100%
+        for (int i = 0; i < totalRecursos; i++) {
+            mostrarProgreso(i + 1, totalRecursos);
+            try {
+                // Espera para que el progreso se vea en la consola
+                Thread.sleep(700); // Esto es solo para simular el progreso (puedes ajustar el tiempo de espera)
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        System.out.println(" ");
+
+        // Imprimir los resultados después de que el progreso haya llegado al 100%
         conteo.entrySet().stream()
                 .sorted(Map.Entry.<RecursoDigital, Long>comparingByValue().reversed())
                 .limit(5)
-                .forEach(entry -> System.out.println(
-                        contador.getAndIncrement() + ". " + entry.getKey().getTitulo() + " - " + entry.getValue() + " préstamos"));
+                .forEach(entry -> {
+                    // Imprimir el recurso en una nueva línea
+                    System.out.println(contador.get() + ". " + entry.getKey().getTitulo() + " - " + entry.getValue() + " préstamos");
+                    contador.getAndIncrement();
+                });
+
+        // Finalizar el progreso al 100% después de procesar todos los recursos
+//        mostrarProgreso(totalRecursos, totalRecursos);
+
+        // Imprimir el mensaje final
+        System.out.println("\n¡Reporte completo!");
     }
 
-    public void reporteUsuariosMasActivos() {
+    private void mostrarProgreso(int actual, int total) {
+        // Evitar que el progreso exceda el 100%
+        int porcentaje = Math.min((int) ((double) actual / total * 100), 100);
+
+        // Mostrar el progreso en la misma línea y sobrescribir la línea anterior
+        System.out.print("\rProgreso: " + porcentaje + "%");
+    }
+
+
+
+
+    public synchronized void reporteUsuariosMasActivos() {
         Map<Usuario, Long> conteo = prestamosTotales.stream()
                 .collect(Collectors.groupingBy(Prestamo::getUsuario, Collectors.counting()));
 
         System.out.println("👤 Usuarios más activos:");
+        System.out.println("Generando reporte...");
+
         AtomicInteger contador = new AtomicInteger(1);
+        int totalUsuarios = conteo.size();
+
+        for (int i = 0; i < totalUsuarios; i++) {
+            mostrarProgreso(i + 1, totalUsuarios);
+            try {
+                Thread.sleep(700);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        System.out.println(" ");
+
         conteo.entrySet().stream()
                 .sorted(Map.Entry.<Usuario, Long>comparingByValue().reversed())
                 .limit(5)
                 .forEach(entry -> System.out.println(
                         contador.getAndIncrement() + ". " + entry.getKey().getNombre() + " " + entry.getKey().getApellido()
                                 + " - " + entry.getValue() + " préstamos"));
+
+//        mostrarProgreso(totalUsuarios, totalUsuarios);
+        System.out.println("\n¡Reporte completo!");
     }
 
 
-    public void estadisticasPorCategoria() {
+    public synchronized void estadisticasPorCategoria() {
         Map<CategoriaRecurso, Long> conteoPorCategoria = prestamosTotales.stream()
                 .collect(Collectors.groupingBy(
                         p -> p.getRecurso().getCategoria(), Collectors.counting()
                 ));
 
         System.out.println("📊 Estadísticas por categoría:");
+        System.out.println("Generando reporte...");
+
+        int totalCategorias = conteoPorCategoria.size();
+        for (int i = 0; i < totalCategorias; i++) {
+            mostrarProgreso(i + 1, totalCategorias);
+            try {
+                Thread.sleep(700);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        System.out.println(" ");
+
         conteoPorCategoria.forEach((categoria, cantidad) -> {
             System.out.println(categoria + ": " + cantidad + " préstamos");
         });
+
+//        mostrarProgreso(totalCategorias, totalCategorias);
+        System.out.println("\n¡Reporte completo!");
     }
+
 
 
 }

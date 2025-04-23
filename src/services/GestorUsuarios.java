@@ -13,7 +13,7 @@ import java.util.Map;
 public class GestorUsuarios {
     private IServicioNotificaciones servicioNotificaciones;
     private static GestorNotificaciones gestorNotificaciones;
-    private static Map<Integer, Usuario> usuarios = new HashMap<>();
+    public static Map<Integer, Usuario> usuarios = new HashMap<>();
 
     public GestorUsuarios(GestorNotificaciones gestorNotificaciones) {
         this.gestorNotificaciones = gestorNotificaciones;
