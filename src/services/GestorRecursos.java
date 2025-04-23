@@ -32,6 +32,10 @@ public class GestorRecursos {
         }
     }
 
+    public static List<RecursoDigital> getRecursos() {
+        return recursos;
+    }
+
     public synchronized void agregarRecurso(RecursoDigital r) {
         System.out.println(Thread.currentThread().getName() + " - Intentando agregar recurso: " + r.getTitulo());
         recursos.add(r);

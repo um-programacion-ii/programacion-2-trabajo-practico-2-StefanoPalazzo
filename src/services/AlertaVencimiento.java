@@ -45,6 +45,8 @@ public class AlertaVencimiento {
                         }
                     }
                 }
+            } else {
+                gestorNotificaciones.notificar("No hay vencimientos próximos.");
             }
         }
     }

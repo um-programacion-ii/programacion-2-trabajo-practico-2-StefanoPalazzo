@@ -4,10 +4,7 @@ import exceptions.RecursoNoDisponibleException;
 import exceptions.UsuarioNoEncontradoException;
 import interfaces.IServicioNotificaciones;
 import interfaces.Prestable;
-import models.CategoriaRecurso;
-import models.Prestamo;
-import models.RecursoDigital;
-import models.Usuario;
+import models.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -104,8 +101,28 @@ public class GestorPrestamos {
                         usuario.getNombre() + " " + usuario.getApellido());
 
         System.out.println(Thread.currentThread().getName() + " - Préstamo devuelto con éxito: " + recurso.getTitulo());
+        verificarReservas(recurso.getId());
 
     }
+
+    public void verificarReservas(int idRecurso) {
+            RecursoDigital recurso = GestorRecursos.buscarRecursoPorId(idRecurso);
+            Reserva reserva = GestorReservas.obtenerProximaReservaDeRecurso(idRecurso);
+            if (reserva != null) {
+                System.out.println("El recurso tiene reservas pendientes. Desea procesar la reserva de usuario: "+ reserva.getUsuario() +" ? (S/N)");
+                try {
+                    int respuesta = System.in.read();
+                    if (respuesta == 'S' || respuesta == 's') {
+                        GestorReservas.procesarProximaReservaDeRecurso(idRecurso);
+                    } else {
+                        System.out.println("Reserva no procesada.");
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error al procesar la reserva: " + e.getMessage());
+                }
+            }
+        }
+
 
 
 

@@ -1,9 +1,14 @@
 package console;
 
 import models.Reserva;
+import services.AlertaDisponibilidad;
+import services.GestorRecursos;
 import services.GestorReservas;
 
 import java.util.Scanner;
+
+import static console.Consola.alertasVencimiento;
+import static console.Consola.alertasDisponibilidad;
 
 public class ConsolaReservas {
     public static void MenuReservas() {
@@ -16,7 +21,9 @@ public class ConsolaReservas {
         System.out.println("2. Procesar Reserva de Recurso");
         System.out.println("3. Mostrar Reserva de Recurso");
         System.out.println("4. Mostrar Reservas Activas");
-        System.out.println("5. Salir");
+        System.out.println("5. Verificar disponibilidad de recurso");
+        System.out.println("6. Mostrar recursos disponibles");
+        System.out.println("7. Salir");
     }
 
     public static void opcionesReservas() {
@@ -77,7 +84,16 @@ public class ConsolaReservas {
                 }
                 break;
             case 5:
-                Consola.ejecutando = false;
+                System.out.println("-- Verificar disponibilidad de Recurso --");
+                System.out.println("ID de recurso: ");
+                int idRecursoAVerificar = Integer.parseInt(sc.nextLine());
+                alertasDisponibilidad.verificarDisponibilidad(idRecursoAVerificar);
+                break;
+            case 6:
+                System.out.println("-- Listado de recursos disponibles --");
+                alertasDisponibilidad.mostrarRecursosDisponibles();
+                break;
+            case 7:
                 break;
             default:
                 System.out.println("Opción no válida. Intente nuevamente.");
