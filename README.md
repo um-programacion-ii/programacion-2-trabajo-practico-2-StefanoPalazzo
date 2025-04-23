@@ -8,7 +8,31 @@ Desarrollar un sistema de gestión de biblioteca digital que implemente los cinc
 ## 👨‍🎓 Información del Alumno
 - **Nombre y Apellido**: Stefano Palazzo
 
-## 📋 Requisitos Adicionales
+
+## 📑 Índice
+
+- [📌 Objetivo General](#-objetivo-general)
+- [👨‍🎓 Información del Alumno](#-información-del-alumno)
+- [🧱 Arquitectura general](#-arquitectura-general)
+- [🔄 Flujo de trabajo del sistema](#-flujo-de-trabajo-del-sistema)
+- [⚙️ Cómo ponerlo en funcionamiento](#️-cómo-ponerlo-en-funcionamiento)
+- [▶️ Instrucciones de ejecución](#️-instrucciones-de-ejecución)
+- [🧪 Ejemplos de Prueba](#-ejemplos-de-prueba)
+    - [📘 Gestión de Recursos](#1--gestión-de-recursos)
+    - [👤 Gestión de Usuarios](#2--gestión-de-usuarios)
+    - [🔁 Préstamos](#3--préstamos)
+    - [📆 Reservas](#4--reservas)
+    - [📊 Reportes](#5--reportes)
+    - [🚨 Alertas](#6--alertas)
+- [🧩 Tecnologías y Herramientas](#-tecnologías-y-herramientas)
+- [📘 Etapas del Trabajo](#-etapas-del-trabajo)
+- [📋 Detalle de Implementación](#-detalle-de-implementación)
+- [✅ Entrega y Flujo de Trabajo con GitHub](#-entrega-y-flujo-de-trabajo-con-github)
+- [📝 Ejemplo de Issue](#-ejemplo-de-issue)
+- [✅ Requisitos para la Entrega](#-requisitos-para-la-entrega)
+- [📚 Recursos Adicionales](#-recursos-adicionales)
+- [📝 Consideraciones Éticas](#-consideraciones-éticas)
+- [📝 Licencia](#-licencia)
 
 ## Documentación del Sistema
 
@@ -76,6 +100,9 @@ El sistema está dividido en varios paquetes, organizados por responsabilidad:
 ### ▶️ Instrucciones de ejecución
 
 1. Clonar el repositorio o copiar el proyecto a tu máquina.
+```bash
+git clone https://github.com/um-programacion-ii/programacion-2-trabajo-practico-2-StefanoPalazzo.git
+```
 2. Abrir el proyecto en tu IDE favorito.
 3. Compilar el proyecto.
 4. Ejecutar la clase `app.Main` como programa Java.
@@ -85,7 +112,6 @@ También se puede compilar y ejecutar desde consola:
 ```bash
 javac -d out $(find src -name "*.java")
 java -cp out app.Main
-Como parte del trabajo práctico, deberás incluir en este README una guía de uso que explique:
 ```
 ---
 
@@ -128,7 +154,7 @@ Como parte del trabajo práctico, deberás incluir en este README una guía de u
     2. Seleccionar "Registrar nuevo usuario".
     3. Completar datos (nombre, email, tipo de usuario).
 - **Validación**:
-    - Email debe ser único y válido.
+    - DNI debe ser único.
 - **Resultado esperado**:
     - El usuario queda registrado y visible en la lista.
 
@@ -147,9 +173,8 @@ Como parte del trabajo práctico, deberás incluir en este README una guía de u
 - **Pasos**:
     1. Ingresar a "Nuevo préstamo".
     2. Ingresar ID de recurso y de usuario.
-- **Verificaciones**:
+  **Verificaciones**:
     - El recurso debe estar disponible.
-    - El usuario no debe tener sanciones activas.
 - **Resultado esperado**:
     - El préstamo queda registrado correctamente.
 
@@ -167,7 +192,7 @@ Como parte del trabajo práctico, deberás incluir en este README una guía de u
 ##### ➕ Realizar Reserva
 - **Pasos**:
     1. Ingresar al módulo de reservas.
-    2. Seleccionar recurso no disponible y confirmar reserva.
+    2. Seleccionar recurso mediante id, agregar usuario mediante DNI y confirmar reserva.
 - **Gestión**:
     - Se coloca al usuario en una cola de espera.
     - El sistema notifica cuando el recurso esté libre.
@@ -206,104 +231,218 @@ Como parte del trabajo práctico, deberás incluir en este README una guía de u
 
 ### Flujo Completo de Préstamo
 
-1. **Registrar un Usuario**
-    - **Descripción**: Registrar un nuevo usuario en el sistema.
-    - **Entrada**: Nombre: "Juan Pérez", Email: "juan.perez@example.com"
-    - **Proceso**: Crear un nuevo registro de usuario con los datos proporcionados.
-    - **Resultado Esperado**: El usuario se registra correctamente en el sistema con los datos indicados.
+#### 1. Registrar Usuario
+```bash
+# Seleccionar opción en menú principal
+> 1. Gestor Usuarios
+> 2. Agregar Usuario
 
-2. **Agregar un Libro**
-    - **Descripción**: Agregar un nuevo libro al catálogo.
-    - **Entrada**: Título: "Java para Principiantes", Autor: "Juan Pérez"
-    - **Proceso**: El sistema registra el libro con la información proporcionada.
-    - **Resultado Esperado**: El libro "Java para Principiantes" se agrega al catálogo de recursos disponibles.
+# Ingresar datos
+DNI: 21485792
+NOMBRE: Juan 
+APELLIDO: Pérez
+EMAIL: juan.perez@example.com
 
-3. **Realizar un Préstamo**
-    - **Descripción**: Realizar un préstamo del libro "Java para Principiantes" a "Juan Pérez".
-    - **Entrada**: Recurso: "Java para Principiantes", Usuario: "Juan Pérez"
-    - **Proceso**: El sistema verifica la disponibilidad del libro y registra el préstamo.
-    - **Resultado Esperado**: El recurso "Java para Principiantes" pasa a estado "prestado" y se asocia al usuario "Juan Pérez".
+Usuario registrado correctamente
+```
+#### 2. Agregar un Libro
 
-4. **Verificar el Estado del Recurso**
-    - **Descripción**: Consultar el estado del libro "Java para Principiantes" después de haber sido prestado.
-    - **Entrada**: Recurso: "Java para Principiantes"
-    - **Proceso**: El sistema muestra el estado actual del recurso.
-    - **Resultado Esperado**: El recurso aparece como "prestado" en el sistema.
+```bash
+# Seleccionar opción
+> 2. Gestor Recursos
+> 2. Agregar Recurso
+> 1. Libro
 
-5. **Devolver el Recurso**
-    - **Descripción**: Registrar la devolución del libro "Java para Principiantes".
-    - **Entrada**: Recurso: "Java para Principiantes", Usuario: "Juan Pérez"
-    - **Proceso**: El sistema actualiza el estado del libro a "disponible".
-    - **Resultado Esperado**: El libro vuelve a estar disponible para otros usuarios.
+# Ingresar datos
+ID: 1
+TITULO: Cien Años de Soledad
+DESCRIPCION: Una novela de realismo mágico de Gabriel García Márquez.
+ISBN: 978-3-16-148410-0
+AUTOR: Gabriel García Márquez
+EDITORIAL: Editorial XYZ
+AÑO: 1967
 
-6. **Verificar la Actualización del Estado**
-    - **Descripción**: Verificar que el libro "Java para Principiantes" esté disponible después de su devolución.
-    - **Entrada**: Recurso: "Java para Principiantes"
-    - **Proceso**: El sistema consulta el estado actualizado del libro.
-    - **Resultado Esperado**: El libro ahora aparece como "disponible" en el catálogo.
+Libro agregado al catálogo
+```
+#### 3. Realizar Préstamo
+```bash
+# Seleccionar opción
+> 3. Gestor Prestamos
+> 1. Prestar recurso
 
----
+# Ingresar datos
+ID Recurso: 1
+ID Usuario: 21485792
+
+Préstamo realizado con éxito
+Thread-1 - RecursoDigital Cien Años de Soledad (1) prestado a Juan Pérez (21485792)
+```
+#### 4. Verificar Estado
+```bash
+# Seleccionar opción
+> 2. Gestor Recursos
+> 5. Buscar por ID
+
+ID: 1
+
+Titulo: Cien Años de Soledad
+Estado: PRESTADO
+Usuario: Juan Pérez
+Fecha devolución: 2024-05-15
+```
+
+#### 5. Devolver Libro
+```bash
+# Seleccionar opción
+> 3. Gestor Prestamos
+> 2. Devolver prestamo
+
+ID Prestamo: 1
+
+Thread-1 - Préstamo devuelto con éxito: Cien Años de Soledad
+
+# Verificación de reservas pendientes
+El recurso tiene reservas pendientes, ¿desea procesar la reserva? (S/N)
+>>>S
+Reserva procesada: RecursoDigital Cien Años de Soledad (1) prestado a Abigail Nuñez (23478742)
+```
+
 
 ### Sistema de Reservas
 
-1. **Registrar Dos Usuarios**
-    - **Descripción**: Registrar dos usuarios en el sistema.
-    - **Entrada**: Usuario 1: "Juan Pérez", Usuario 2: "Ana López"
-    - **Proceso**: El sistema registra ambos usuarios.
-    - **Resultado Esperado**: Ambos usuarios se registran correctamente.
+#### 1. Registrar Dos Usuarios
+```bash
+# Primer usuario
+> 1. Gestor Usuarios
+> 2. Agregar Usuario
 
-2. **Agregar un Libro**
-    - **Descripción**: Agregar un libro que podrá ser reservado por los usuarios.
-    - **Entrada**: Título: "Java para Principiantes", Autor: "Juan Pérez"
-    - **Proceso**: El sistema agrega el libro al catálogo.
-    - **Resultado Esperado**: El libro "Java para Principiantes" aparece en el catálogo disponible para reserva.
+DNI: 21485792
+NOMBRE: Juan
+APELLIDO: Pérez
+EMAIL: juan.perez@mail.com
 
-3. **Realizar una Reserva con Cada Usuario**
-    - **Descripción**: Los usuarios intentan reservar el libro "Java para Principiantes".
-    - **Entrada**: Usuario 1: "Juan Pérez", Usuario 2: "Ana López"
-    - **Proceso**: Ambos usuarios hacen una reserva del libro.
-    - **Resultado Esperado**: El sistema coloca a "Juan Pérez" en la cola y notifica a "Ana López" que ha reservado el libro.
+✅ Usuario registrado correctamente
 
-4. **Verificar la Cola de Reservas**
-    - **Descripción**: Verificar el estado de la cola de reservas.
-    - **Entrada**: Recurso: "Java para Principiantes"
-    - **Proceso**: El sistema muestra la lista de usuarios que han reservado el libro.
-    - **Resultado Esperado**: El sistema muestra a "Juan Pérez" en cola, esperando por la disponibilidad del libro.
+# Segundo usuario
+> 2. Agregar Usuario
 
-5. **Procesar las Reservas**
-    - **Descripción**: Procesar las reservas y notificar a los usuarios.
-    - **Entrada**: Recurso: "Java para Principiantes"
-    - **Proceso**: El libro es devuelto y el sistema procesa la cola de reservas.
-    - **Resultado Esperado**: "Juan Pérez" es notificado que el libro está disponible para su retiro.
+DNI: 23478742
+NOMBRE: Ana
+APELLIDO: López  
+EMAIL: ana.lopez@mail.com
 
----
+✅ Usuario registrado correctamente
+```
+
+#### 2. Agregar Libro
+```bash
+> 2. Gestor Recursos
+> 2. Agregar Recurso
+> 1. Libro
+
+ID: 1
+TITULO: Java para Principiantes
+DESCRIPCION: Guía introductoria a Java
+ISBN: 978-0-13-708189-9
+AUTOR: Juan Pérez
+EDITORIAL: TechBooks
+AÑO: 2024
+
+✅ Libro agregado al catálogo
+```
+
+#### 3. Realizar Reservas
+```bash
+# Reserva Usuario 1
+> 4. Gestor Reservas
+> 1. Agregar Reserva
+
+ID Recurso: 1
+ID Usuario: 21485792
+
+✅ Reserva agregada con éxito
+
+# Reserva Usuario 2
+> 1. Agregar Reserva
+
+ID Recurso: 1  
+ID Usuario: 23478742
+
+✅ Reserva agregada con éxito
+```
+
+#### 4. Verificar Cola de Reservas
+```bash
+> 4. Gestor Reservas
+> 4. Mostrar Reservas Activas
+
+Reservas pendientes:
+• Reserva #1: Java para Principiantes
+Usuario: Juan Pérez (21485792)
+Estado: EN_ESPERA
+
+• Reserva #2: Java para Principiantes
+Usuario: Ana López (23478742)  
+Estado: EN_ESPERA
+```
+
+#### 5. Procesar Reservas
+```bash
+> 4. Gestor Reservas
+> 2. Procesar Reserva de Recurso
+
+ID Recurso: 1
+
+✅ Reserva procesada:
+RecursoDigital Java para Principiantes (1) prestado a Juan Pérez (21485792)
+```
 
 ### Alertas y Notificaciones
 
-1. **Realizar un Préstamo**
-    - **Descripción**: Registrar un préstamo del libro "Java para Principiantes" a "Juan Pérez".
-    - **Entrada**: Recurso: "Java para Principiantes", Usuario: "Juan Pérez"
-    - **Proceso**: El sistema realiza el préstamo y marca el recurso como "prestado".
-    - **Resultado Esperado**: El préstamo se registra correctamente y el libro aparece como "prestado" en el sistema.
+#### 1. Realizar un Préstamo
+```bash
+# Seleccionar opción en el menú principal
+> 3. Gestor Prestamos
+> 1. Prestar recurso
 
-2. **Esperar a que se Acerque la Fecha de Vencimiento**
-    - **Descripción**: El sistema debe generar una alerta cuando se acerque la fecha de vencimiento del préstamo.
-    - **Entrada**: Préstamo: "Java para Principiantes", Usuario: "Juan Pérez"
-    - **Proceso**: El sistema calcula la fecha de vencimiento y genera una alerta de proximidad.
-    - **Resultado Esperado**: El sistema genera una alerta que dice: "El recurso 'Java para Principiantes' debe devolverse en 2 días."
+# Ingresar datos
+ID Recurso: 1
+ID Usuario: 21485792
+
+✅ Préstamo registrado correctamente
+Thread-1 - RecursoDigital Java para Principiantes (1) prestado a Juan Pérez (21485792)
+```
+#### 2. Esperar a que se Acerque la Fecha de Vencimiento
+```bash
+Descripción: El sistema debe generar una alerta cuando se acerque la fecha de vencimiento del préstamo.
+Resultado Esperado: El sistema genera una alerta que dice: "El recurso 'Java para Principiantes' debe devolverse en 2 días."
+
+# El sistema genera automáticamente una alerta cuando se acerca la fecha de vencimiento
+[WARNING] El recurso 'Java para Principiantes' debe devolverse en 2 días.
+```
 
 3. **Verificar las Alertas Generadas**
-    - **Descripción**: Verificar que el sistema haya generado correctamente las alertas.
-    - **Entrada**: Préstamo: "Java para Principiantes", Usuario: "Juan Pérez"
-    - **Proceso**: El sistema muestra las alertas generadas para el usuario.
-    - **Resultado Esperado**: El usuario recibe la alerta: "El recurso 'Java para Principiantes' debe devolverse en 2 días."
+```bash
+# Seleccionar opción en el menú principal
+> 6. Alertas
+> 2. Historial de alertas
 
+=== HISTORIAL DE ALERTAS ===
+[INFO] Préstamo registrado correctamente.
+[WARNING] El recurso 'Java para Principiantes' debe devolverse en 2 días.
+```
 4. **Probar la Renovación del Préstamo**
-    - **Descripción**: Realizar la renovación del préstamo antes de la fecha de vencimiento.
-    - **Entrada**: Recurso: "Java para Principiantes", Usuario: "Juan Pérez"
-    - **Proceso**: El usuario renueva el préstamo por un período adicional.
-    - **Resultado Esperado**: El sistema renueva el préstamo correctamente y actualiza la fecha de vencimiento.
+```bash
+# Seleccionar opción en el menú principal
+> 3. Gestor Prestamos
+> 3. Renovar préstamo
 
+# Ingresar ID del préstamo
+ID Prestamo: 1
+
+Préstamo renovado correctamente
+Nueva fecha de devolución: 2024-05-20 
+```
 ## 🧩 Tecnologías y Herramientas
 
 - Java 21+ (LTS)
