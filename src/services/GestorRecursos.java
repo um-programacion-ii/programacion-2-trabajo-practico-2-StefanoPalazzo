@@ -4,6 +4,7 @@ import interfaces.IServicioNotificaciones;
 import interfaces.Prestable;
 import interfaces.Renovable;
 import models.CategoriaRecurso;
+import models.NivelUrgencia;
 import models.Prestamo;
 import models.RecursoDigital;
 
@@ -16,10 +17,10 @@ import java.util.stream.Collectors;
 public class GestorRecursos {
     private static List<RecursoDigital> recursos = Collections.synchronizedList(new ArrayList<>());
 
-    private IServicioNotificaciones servicioNotificaciones;
+    private GestorNotificaciones gestorNotificaciones;
 
-    public GestorRecursos(IServicioNotificaciones servicioNotificaciones) {
-        this.servicioNotificaciones = servicioNotificaciones;
+    public GestorRecursos(GestorNotificaciones gestorNotificaciones) {
+        this.gestorNotificaciones = gestorNotificaciones;
         this.recursos = new ArrayList<>();
 
 
@@ -39,7 +40,7 @@ public class GestorRecursos {
     public synchronized void agregarRecurso(RecursoDigital r) {
         System.out.println(Thread.currentThread().getName() + " - Intentando agregar recurso: " + r.getTitulo());
         recursos.add(r);
-        servicioNotificaciones.enviarNotificacion("RecursoDigital " + r.getTitulo() + " agregado con éxito.");
+        gestorNotificaciones.notificar("RecursoDigital " + r.getTitulo() + " agregado con éxito.", NivelUrgencia.INFO);
         System.out.println(Thread.currentThread().getName() + " - Recurso agregado: " + r.getTitulo());
     }
 
@@ -50,7 +51,7 @@ public class GestorRecursos {
             if (r.getId() == id) {
                 recursos.remove(i);
                 System.out.println(Thread.currentThread().getName() + " - Recurso eliminado: " + r.getTitulo());
-                servicioNotificaciones.enviarNotificacion("RecursoDigital " + r.getTitulo() + " eliminado con éxito.");
+                gestorNotificaciones.notificar("RecursoDigital " + r.getTitulo() + " eliminado con éxito.", NivelUrgencia.INFO);
                 return;
             }
         }

@@ -1,5 +1,6 @@
 package services;
 
+import models.NivelUrgencia;
 import models.Prestamo;
 import models.RecursoDigital;
 import interfaces.Renovable;
@@ -28,10 +29,10 @@ public class AlertaVencimiento {
             RecursoDigital recurso = prestamo.getRecurso();
 
             if (diasRestantes == 1) {
-                gestorNotificaciones.notificar("⚠️ El recurso '" + recurso.getTitulo()
-                        + "' vence mañana (" + fechaDevolucion + ").");
+                gestorNotificaciones.notificar("El recurso '" + recurso.getTitulo()
+                        + "' vence mañana (" + fechaDevolucion + ").", NivelUrgencia.WARNING);
             } else if (diasRestantes == 0) {
-                gestorNotificaciones.notificar("🚨 HOY VENCE prestamo N°" + prestamo.getId() + "(" + recurso.getTitulo() + ")" + "(" + fechaDevolucion + ")" + "!");
+                gestorNotificaciones.notificar("HOY VENCE prestamo N°" + prestamo.getId() + "(" + recurso.getTitulo() + ")" + "(" + fechaDevolucion + ")" + "!", NivelUrgencia.WARNING);
 
                 if (recurso instanceof Renovable) {
                     System.out.print("¿Desea renovar el prestamo N°" + prestamo.getId() + "(" + recurso.getTitulo() + ")" + "? (s/n): ");
@@ -39,14 +40,14 @@ public class AlertaVencimiento {
                     if (opcion.equalsIgnoreCase("s")) {
                         try {
                             ((Renovable) recurso).renovar();
-                            gestorNotificaciones.notificar("El prestamo N°" + prestamo.getId() + "(" + recurso.getTitulo() + ")" + " fue renovado correctamente.");
+                            gestorNotificaciones.notificar("El prestamo N°" + prestamo.getId() + "(" + recurso.getTitulo() + ")" + " fue renovado correctamente.", NivelUrgencia.INFO);
                         } catch (Exception e) {
-                            gestorNotificaciones.notificar("Error al renovar prestamo N°" + prestamo.getId() + "(" + recurso.getTitulo() + ")" + " : " + e.getMessage());
+                            gestorNotificaciones.notificar("Error al renovar prestamo N°" + prestamo.getId() + "(" + recurso.getTitulo() + ")" + " : " + e.getMessage(), NivelUrgencia.ERROR);
                         }
                     }
                 }
             } else {
-                gestorNotificaciones.notificar("No hay vencimientos próximos.");
+                gestorNotificaciones.notificar("No hay vencimientos próximos.", NivelUrgencia.INFO);
             }
         }
     }

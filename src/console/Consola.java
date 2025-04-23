@@ -22,10 +22,10 @@ public class Consola {
     public static void main(String[] args) {
         ServicioNotificacionesEmail servicioNotificacionesEmail = new ServicioNotificacionesEmail();
         gestorNotificaciones = new GestorNotificaciones(servicioNotificacionesEmail);
-        gestorUsuarios = new GestorUsuarios(servicioNotificacionesEmail);
-        gestorRecursos = new GestorRecursos(servicioNotificacionesEmail);
-        gestorPrestamos = new GestorPrestamos(servicioNotificacionesEmail);
-        gestorReservas = new GestorReservas(servicioNotificacionesEmail);
+        gestorUsuarios = new GestorUsuarios(gestorNotificaciones);
+        gestorRecursos = new GestorRecursos(gestorNotificaciones);
+        gestorPrestamos = new GestorPrestamos(gestorNotificaciones);
+        gestorReservas = new GestorReservas(gestorNotificaciones);
         alertasDisponibilidad = new AlertaDisponibilidad(GestorRecursos.getRecursos());
         inciarConsola();
     }
@@ -33,10 +33,10 @@ public class Consola {
     public static void inicializar() {
         ServicioNotificacionesEmail servicioNotificacionesEmail = new ServicioNotificacionesEmail();
         gestorNotificaciones = new GestorNotificaciones(servicioNotificacionesEmail);
-        gestorUsuarios = new GestorUsuarios(servicioNotificacionesEmail);
-        gestorRecursos = new GestorRecursos(servicioNotificacionesEmail);
-        gestorPrestamos = new GestorPrestamos(servicioNotificacionesEmail);
-        gestorReservas = new GestorReservas(servicioNotificacionesEmail);
+        gestorUsuarios = new GestorUsuarios(gestorNotificaciones);
+        gestorRecursos = new GestorRecursos(gestorNotificaciones);
+        gestorPrestamos = new GestorPrestamos(gestorNotificaciones);
+        gestorReservas = new GestorReservas(gestorNotificaciones);
         alertasDisponibilidad = new AlertaDisponibilidad(gestorRecursos.getRecursos());
     }
 

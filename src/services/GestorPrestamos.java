@@ -18,10 +18,10 @@ public class GestorPrestamos {
     private static List<Prestamo> prestamosTotales = Collections.synchronizedList(new ArrayList<>());
     private static List<Prestamo> prestamosActivos = Collections.synchronizedList(new ArrayList<>());
 
-    private static IServicioNotificaciones servicioNotificaciones;
+    private static GestorNotificaciones gestorNotificaciones;
 
-    public GestorPrestamos(IServicioNotificaciones servicioNotificaciones){
-        this.servicioNotificaciones = servicioNotificaciones;
+    public GestorPrestamos(GestorNotificaciones gestorNotificaciones){
+        this.gestorNotificaciones = gestorNotificaciones;
         this.prestamosTotales = new ArrayList<>();
         this.prestamosActivos = new ArrayList<>();
 
@@ -41,10 +41,12 @@ public class GestorPrestamos {
         Usuario usuario = GestorUsuarios.buscarUsuarioPorId(idUsuario);
         System.out.println(Thread.currentThread().getName() + " - Dentro de la sección sincronizada.");
         if (recurso == null) {
+            gestorNotificaciones.notificar("Recurso no válido.", NivelUrgencia.ERROR);
             throw new RecursoNoDisponibleException("Recurso no válido.");
         }
 
         if (!(recurso instanceof Prestable recursoPrestable)) {
+            gestorNotificaciones.notificar("Este tipo de recurso no puede ser prestado.", NivelUrgencia.ERROR);
             throw new exceptions.RecursoNoDisponibleException("Este tipo de recurso no puede ser prestado.");
         }
 
@@ -52,6 +54,7 @@ public class GestorPrestamos {
         Prestamo nuevoPrestamo;
         synchronized (recursoPrestable) {
             if (recursoPrestable.estaPrestado()) {
+                gestorNotificaciones.notificar("El recurso ya está prestado.", NivelUrgencia.ERROR);
                 throw new RecursoNoDisponibleException("El recurso ya está prestado.");
             }
             nuevoPrestamo = new Prestamo(recurso, usuario);
@@ -61,22 +64,21 @@ public class GestorPrestamos {
         nuevoPrestamo.setFechaDevolucion();
         prestamosTotales.add(nuevoPrestamo);
         prestamosActivos.add(nuevoPrestamo);
-        servicioNotificaciones.enviarNotificacion("RecursoDigital " + recurso.getTitulo() +
+        gestorNotificaciones.notificar(Thread.currentThread().getName() + "- RecursoDigital " + recurso.getTitulo() +
                 " ( " + recurso.getId() + " ) " + " prestado a " +
-                usuario.getNombre() + " " + usuario.getApellido() + " ( " + usuario.getId() + " ) ");
-        System.out.println(Thread.currentThread().getName() + " - Préstamo realizado con éxito.");
+                usuario.getNombre() + " " + usuario.getApellido() + " ( " + usuario.getId() + " ) ", NivelUrgencia.INFO);
         return nuevoPrestamo;
     }
 
     public synchronized void devolverPrestamo(int idPrestamo) throws RecursoNoDisponibleException {
-        System.out.println(Thread.currentThread().getName() + " - Intentando devolver préstamo ID: " + idPrestamo);
-
+        gestorNotificaciones.notificar(Thread.currentThread().getName() + " - Intentando devolver préstamo ID: " + idPrestamo, NivelUrgencia.INFO);
         Prestamo prestamo = prestamosActivos.stream()
                 .filter(p -> p.getId() == idPrestamo && !p.isDevuelto())
                 .findFirst()
                 .orElse(null);
 
         if (prestamo == null) {
+            gestorNotificaciones.notificar(Thread.currentThread().getName() +" - No se encontró un préstamo activo con ID: " + idPrestamo, NivelUrgencia.ERROR);
             throw new RecursoNoDisponibleException("No se encontró un préstamo activo con ID " + idPrestamo);
         }
 
@@ -96,9 +98,9 @@ public class GestorPrestamos {
 
         Usuario usuario = prestamo.getUsuario();
 
-        servicioNotificaciones.enviarNotificacion(
+        gestorNotificaciones.notificar(
                 "RecursoDigital " + recurso.getTitulo() + " devuelto con éxito por " +
-                        usuario.getNombre() + " " + usuario.getApellido());
+                        usuario.getNombre() + " " + usuario.getApellido(), NivelUrgencia.INFO);
 
         System.out.println(Thread.currentThread().getName() + " - Préstamo devuelto con éxito: " + recurso.getTitulo());
         verificarReservas(recurso.getId());
@@ -138,9 +140,9 @@ public class GestorPrestamos {
 
         prestamo.renovar();
 
-        servicioNotificaciones.enviarNotificacion(
+        gestorNotificaciones.notificar(
                 "Préstamo del recurso \"" + prestamo.getRecurso().getTitulo() + "\" renovado. Nueva fecha de devolución: " +
-                        prestamo.getFechaDevolucion());
+                        prestamo.getFechaDevolucion(), NivelUrgencia.INFO);
 
         System.out.println("Préstamo renovado con éxito. Nueva fecha de devolución: " + prestamo.getFechaDevolucion());
     }

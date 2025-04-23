@@ -2,10 +2,7 @@ package services;
 
 import interfaces.IServicioNotificaciones;
 import interfaces.Prestable;
-import models.Prestamo;
-import models.RecursoDigital;
-import models.Reserva;
-import models.Usuario;
+import models.*;
 
 import java.util.concurrent.PriorityBlockingQueue;
 
@@ -13,10 +10,10 @@ import exceptions.RecursoNoDisponibleException;
 
 public class GestorReservas {
     private static final PriorityBlockingQueue<Reserva> colaReservas = new PriorityBlockingQueue<>();
-    private static IServicioNotificaciones servicioNotificaciones;
+    private static GestorNotificaciones gestorNotificaciones;
 
-    public GestorReservas(IServicioNotificaciones servicioNotificaciones) {
-        this.servicioNotificaciones = servicioNotificaciones;
+    public GestorReservas(GestorNotificaciones gestorNotificaciones) {
+        this.gestorNotificaciones = gestorNotificaciones;
     }
 
     public synchronized static void agregarReserva(int idRecurso, int idUsuario) throws RecursoNoDisponibleException {
@@ -58,19 +55,19 @@ public class GestorReservas {
             int usuarioId = usuario.getId();
             RecursoDigital recurso = reserva.getRecurso();
             GestorPrestamos.prestarRecurso(recurso.getId(), usuario.getId());
-            servicioNotificaciones.enviarNotificacion("RecursoDigital " + recurso.getTitulo() +
+            gestorNotificaciones.notificar("RecursoDigital " + recurso.getTitulo() +
                     " ( " + recurso.getId() + " ) " + " prestado a " +
-                    usuario.getNombre() + " " + usuario.getApellido() + " ( " + usuario.getId() + " ) ");
+                    usuario.getNombre() + " " + usuario.getApellido() + " ( " + usuario.getId() + " ) ", NivelUrgencia.INFO);
             return reserva;
         } else {
-            System.out.println("No hay reservas pendientes para el recurso con ID " + idRecurso);
+            gestorNotificaciones.notificar("No hay reservas pendientes para el recurso con ID " + idRecurso, NivelUrgencia.ERROR);
             return null;
         }
     }
 
     public static void mostrarReservas() {
         if (colaReservas.isEmpty()) {
-            System.out.println("No hay reservas en la cola.");
+            gestorNotificaciones.notificar("No hay reservas en la cola.", NivelUrgencia.INFO);
             return;
         }
 

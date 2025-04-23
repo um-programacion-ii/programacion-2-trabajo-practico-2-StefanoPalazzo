@@ -24,7 +24,6 @@ Milestone: `Etapa X - ...`
 - [ ] El código fue probado desde `Main` u otra clase de prueba
 - [ ] Este PR está asociado a un Issue con milestone y project
 - [ ] Se siguieron los principios SOLID correspondientes
-- [ ] El código fue revisado por otro miembro del equipo (si aplica)
 
 ## 💬 Comentarios adicionales
 <!-- Agregá cualquier otro dato relevante, duda o comentario -->
