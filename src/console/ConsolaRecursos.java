@@ -71,6 +71,7 @@ public class ConsolaRecursos {
                 System.out.println("ID del recurso a buscar: ");
                 int id = Integer.parseInt(sc.nextLine());
                 RecursoDigital recursoBuscado = Consola.gestorRecursos.buscarRecursoPorId(id);
+                break;
             case 6:
                 System.out.println("Cargando recursos de ejemplo...");
 

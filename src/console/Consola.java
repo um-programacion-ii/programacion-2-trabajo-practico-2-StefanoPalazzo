@@ -14,7 +14,8 @@ public class Consola {
     public static GestorPrestamos gestorPrestamos;
     public static GestorReservas gestorReservas;
     public static GestorNotificaciones gestorNotificaciones;
-    public static AlertaVencimiento alertas;
+    public static AlertaVencimiento alertasVencimiento;
+    public static AlertaDisponibilidad alertasDisponibilidad;
     public static boolean ejecutando = true;
 
     public static void main(String[] args) {
@@ -24,7 +25,7 @@ public class Consola {
         gestorRecursos = new GestorRecursos(servicioNotificacionesEmail);
         gestorPrestamos = new GestorPrestamos(servicioNotificacionesEmail);
         gestorReservas = new GestorReservas(servicioNotificacionesEmail);
-
+        alertasDisponibilidad = new AlertaDisponibilidad(GestorRecursos.getRecursos());
         inciarConsola();
     }
 
@@ -53,41 +54,46 @@ public class Consola {
 
     public static void opcionesMenuPrincipal() {
         Scanner sc = new Scanner(System.in);
-        int opcion = sc.nextInt();
-        switch (opcion) {
-            case 1:
-                ConsolaUsuarios.MenuUsuarios();
-                break;
-            case 2:
-                ConsolaRecursos.MenuRecursos();
-                break;
-            case 3:
-                ConsolaPrestamos.MenuPrestamos();
-                break;
-            case 4:
-                ConsolaReservas.MenuReservas();
-                break;
-            case 5:
-                ConsolaReportes.MenuReportes();
-                break;
-            case 6:
-                System.out.println("=== ALERTAS DE VENCIMIENTO ===");
-                if (gestorPrestamos.getPrestamosActivos().isEmpty()) {
-                    System.out.println("No hay préstamos activos para verificar alertas.");
+        try {
+            int opcion = sc.nextInt();
+            switch (opcion) {
+                case 1:
+                    ConsolaUsuarios.MenuUsuarios();
                     break;
-                }
+                case 2:
+                    ConsolaRecursos.MenuRecursos();
+                    break;
+                case 3:
+                    ConsolaPrestamos.MenuPrestamos();
+                    break;
+                case 4:
+                    ConsolaReservas.MenuReservas();
+                    break;
+                case 5:
+                    ConsolaReportes.MenuReportes();
+                    break;
+                case 6:
+                    System.out.println("=== ALERTAS DE VENCIMIENTO ===");
+                    if (gestorPrestamos.getPrestamosActivos().isEmpty()) {
+                        System.out.println("No hay préstamos activos para verificar alertas.");
+                        break;
+                    }
 
-                alertas = new AlertaVencimiento(gestorPrestamos.getPrestamosActivos(), gestorNotificaciones);
-                alertas.verificarAlertas();
-                break;
+                    alertasVencimiento = new AlertaVencimiento(gestorPrestamos.getPrestamosActivos(), gestorNotificaciones);
+                    alertasVencimiento.verificarAlertas();
+                    break;
 
-            case 7:
-                System.out.println("Saliendo...");
-                ejecutando = false;
-                break;
-            default:
-                System.out.println("Opción no válida");
-                break;
+                case 7:
+                    System.out.println("Saliendo...");
+                    ejecutando = false;
+                    break;
+                default:
+                    System.out.println("Opción no válida");
+                    break;
+            }
+        }catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            sc.nextLine();
         }
     }
 
