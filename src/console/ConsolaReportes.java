@@ -13,6 +13,7 @@ public class ConsolaReportes {
         System.out.println("1. Recursos más prestados");
         System.out.println("2. Usuarios más activos");
         System.out.println("3. Uso por categoría");
+        System.out.println("4. Volver");
     }
 
     public static void opcionesReportes() {
@@ -28,6 +29,9 @@ public class ConsolaReportes {
                 break;
             case 3:
                 Consola.gestorPrestamos.estadisticasPorCategoria();
+                break;
+            case 4:
+                System.out.println("Volviendo al menú principal...");
                 break;
             default:
                 System.out.println("Opción no válida. Intente nuevamente.");
