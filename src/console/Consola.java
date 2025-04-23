@@ -18,6 +18,7 @@ public class Consola {
     public static AlertaDisponibilidad alertasDisponibilidad;
     public static boolean ejecutando = true;
 
+
     public static void main(String[] args) {
         ServicioNotificacionesEmail servicioNotificacionesEmail = new ServicioNotificacionesEmail();
         gestorNotificaciones = new GestorNotificaciones(servicioNotificacionesEmail);
@@ -28,6 +29,17 @@ public class Consola {
         alertasDisponibilidad = new AlertaDisponibilidad(GestorRecursos.getRecursos());
         inciarConsola();
     }
+
+    public static void inicializar() {
+        ServicioNotificacionesEmail servicioNotificacionesEmail = new ServicioNotificacionesEmail();
+        gestorNotificaciones = new GestorNotificaciones(servicioNotificacionesEmail);
+        gestorUsuarios = new GestorUsuarios(servicioNotificacionesEmail);
+        gestorRecursos = new GestorRecursos(servicioNotificacionesEmail);
+        gestorPrestamos = new GestorPrestamos(servicioNotificacionesEmail);
+        gestorReservas = new GestorReservas(servicioNotificacionesEmail);
+        alertasDisponibilidad = new AlertaDisponibilidad(gestorRecursos.getRecursos());
+    }
+
 
     public static void inciarConsola() {
         MenuPrincipal();
