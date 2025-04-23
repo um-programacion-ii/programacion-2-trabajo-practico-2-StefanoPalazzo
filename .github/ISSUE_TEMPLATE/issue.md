@@ -1,3 +1,11 @@
+---
+name: Reporte de tarea o mejora
+about: Crear un nuevo issue para trabajar en una tarea del proyecto
+title: "[TAREA] "
+labels: enhancement
+assignees: 'StefanoPalazzo'
+---
+
 ## 🧾 Título
   
   <!-- Especificá brevemente el objetivo principal de la tarea -->
