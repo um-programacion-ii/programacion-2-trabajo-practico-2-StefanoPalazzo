@@ -34,6 +34,10 @@ public class ConsolaUsuarios {
                 System.out.println("Ingrese DNI");
                 int dni = sc.nextInt();
                 sc.nextLine();
+                if (Consola.gestorUsuarios.usuarios.containsKey(dni)) {
+                    System.out.println("El DNI ya está registrado.");
+                    break;
+                }
                 System.out.println("Ingrese Nombre");
                 String nombre = sc.nextLine();
                 System.out.println("Ingrese apellido");

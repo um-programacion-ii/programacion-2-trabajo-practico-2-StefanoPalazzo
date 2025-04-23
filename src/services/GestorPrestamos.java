@@ -164,7 +164,7 @@ public class GestorPrestamos {
                     + (prestamo.getFechaDevolucion() != null ? prestamo.getFechaDevolucion() : "No devuelto aún"));
         }
     }
-    public void reporteRecursosMasPrestados() {
+    public synchronized void reporteRecursosMasPrestados() {
         Map<RecursoDigital, Long> conteo = prestamosTotales.stream()
                 .collect(Collectors.groupingBy(Prestamo::getRecurso, Collectors.counting()));
 
@@ -177,7 +177,7 @@ public class GestorPrestamos {
                         contador.getAndIncrement() + ". " + entry.getKey().getTitulo() + " - " + entry.getValue() + " préstamos"));
     }
 
-    public void reporteUsuariosMasActivos() {
+    public synchronized void reporteUsuariosMasActivos() {
         Map<Usuario, Long> conteo = prestamosTotales.stream()
                 .collect(Collectors.groupingBy(Prestamo::getUsuario, Collectors.counting()));
 
@@ -192,7 +192,7 @@ public class GestorPrestamos {
     }
 
 
-    public void estadisticasPorCategoria() {
+    public synchronized void estadisticasPorCategoria() {
         Map<CategoriaRecurso, Long> conteoPorCategoria = prestamosTotales.stream()
                 .collect(Collectors.groupingBy(
                         p -> p.getRecurso().getCategoria(), Collectors.counting()
