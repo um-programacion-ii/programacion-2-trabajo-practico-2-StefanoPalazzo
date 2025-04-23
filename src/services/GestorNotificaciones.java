@@ -3,14 +3,13 @@ package services;
 import interfaces.IServicioNotificaciones;
 import models.NivelUrgencia;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import static console.Consola.gestorNotificaciones;
 
 public class GestorNotificaciones {
     private final IServicioNotificaciones canal;
@@ -35,9 +34,26 @@ public class GestorNotificaciones {
         executor.submit(() -> canal.enviarNotificacion(mensajeFormateado));
     }
 
-    public void mostrarHistorial() {
-        System.out.println("📋 Historial de Alertas:");
-        historial.forEach(System.out::println);
+    public List<String> getHistorial() {
+        System.out.println("=== Configuración de Alertas ===");
+        return historial;
+    }
+
+    public static void menuConfiguracionAlertas() {
+        Scanner sc = new Scanner(System.in);
+        Set<NivelUrgencia> preferencias = EnumSet.noneOf(NivelUrgencia.class);
+
+        System.out.println("=== Configuración de Alertas ===");
+        for (NivelUrgencia nivel : NivelUrgencia.values()) {
+            System.out.print("¿Desea activar notificaciones para " + nivel.name() + "? (s/n): ");
+            String respuesta = sc.nextLine();
+            if (respuesta.equalsIgnoreCase("s")) {
+                preferencias.add(nivel);
+            }
+        }
+
+        gestorNotificaciones.configurarPreferencias(preferencias);
+        System.out.println("Preferencias actualizadas: " + preferencias);
     }
 
     public void configurarPreferencias(Set<NivelUrgencia> niveles) {

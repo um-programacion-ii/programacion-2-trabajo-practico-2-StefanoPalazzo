@@ -65,7 +65,7 @@ public class GestorRecursos {
     }
 
     public List<RecursoDigital> filtrarPorCategoria(String categoria) {
-        CategoriaRecurso categoriaEnum = CategoriaRecurso.desdeString(categoria); // Conversión del string a CategoriaRecurso
+        CategoriaRecurso categoriaEnum = CategoriaRecurso.desdeString(categoria);
         return recursos.stream()
                 .filter(r -> r.getCategoria() == categoriaEnum)
                 .collect(Collectors.toList());
