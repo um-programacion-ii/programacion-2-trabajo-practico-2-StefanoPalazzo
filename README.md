@@ -6,114 +6,303 @@
 Desarrollar un sistema de gestión de biblioteca digital que implemente los cinco principios SOLID, programación orientada a objetos, y conceptos avanzados de Java. El sistema deberá manejar diferentes tipos de recursos digitales, préstamos, reservas, y notificaciones en tiempo real.
 
 ## 👨‍🎓 Información del Alumno
-- **Nombre y Apellido**: [Nombre y Apellido del Alumno]
+- **Nombre y Apellido**: Stefano Palazzo
 
 ## 📋 Requisitos Adicionales
 
-### Documentación del Sistema
+## Documentación del Sistema
+
+### 🧱 Arquitectura general
+
+El sistema tiene la siguiente estructura:
+
+```bash
+src/
+├── console/
+│   ├── Consola.java
+│   ├── ConsolaUsuarios.java
+│   ├── ConsolaAlertas.java
+│   ├── ConsolaRecursos.java
+│   ├── ConsolaPrestamos.java
+│   ├── ConsolaReservas.java
+│   ├── ConsolaReportes.java
+├── exceptions/
+│   ├── RecursoNoDisponibleException.java
+│   ├── UsuarioNoEncontradoException.java
+├── interfaces/
+│   ├── IServicioNotificaciones.java
+│   ├── Prestable.java
+├── models/
+│   ├── Usuario.java
+│   ├── RecursoDigital.java
+│   ├── Prestamo.java
+│   ├── Reserva.java
+│   ├── CategoriaRecurso.java
+├── services/
+│   ├── GestorUsuarios.java
+│   ├── GestorRecursos.java
+│   ├── GestorPrestamos.java
+│   ├── GestorReservas.java
+│   ├── GestorNotificaciones.java
+│   ├── AlertaVencimiento.java
+│   ├── AlertaDisponibilidad.java
+│   ├── ServicioNotificacionesEmail.java
+```
+El sistema está dividido en varios paquetes, organizados por responsabilidad:
+
+- `console/`: Contiene las clases de interfaz de texto (consola) para la interacción con el usuario.
+- `models/`: Define las entidades del dominio como `Usuario`, `RecursoDigital`, `Prestamo`, `Reserva`, etc.
+- `services/`: Contiene los servicios que gestionan la lógica de negocio (`GestorUsuarios`, `GestorPrestamos`, etc.).
+- `exceptions/`: Contiene excepciones personalizadas para manejar errores de dominio.
+- `interfaces/`: Define interfaces como `Prestable` e `IServicioNotificaciones` para seguir los principios SOLID.
+
+### 🔄 Flujo de trabajo del sistema
+
+1. Al ejecutar la aplicación, se inicializan los gestores y servicios.
+2. El menú principal permite al usuario navegar por las distintas funcionalidades: usuarios, recursos, préstamos, reservas, reportes y alertas.
+3. Cada opción delega en una consola específica (`ConsolaUsuarios`, `ConsolaRecursos`, etc.) que se comunica con los gestores.
+4. Los gestores manejan la lógica de negocio y validaciones, y notifican a los usuarios mediante un sistema de alertas (`GestorNotificaciones` y clases `AlertaDisponibilidad` / `AlertaVencimiento`).
+
+---
+
+## ⚙️ Cómo ponerlo en funcionamiento
+
+### ✅ Requisitos previos
+
+- Java 21 o superior instalado
+- IDE recomendado: IntelliJ IDEA o Eclipse
+- JDK correctamente configurado en el entorno
+
+### ▶️ Instrucciones de ejecución
+
+1. Clonar el repositorio o copiar el proyecto a tu máquina.
+2. Abrir el proyecto en tu IDE favorito.
+3. Compilar el proyecto.
+4. Ejecutar la clase `app.Main` como programa Java.
+
+También se puede compilar y ejecutar desde consola:
+
+```bash
+javac -d out $(find src -name "*.java")
+java -cp out app.Main
 Como parte del trabajo práctico, deberás incluir en este README una guía de uso que explique:
-
-1. **Cómo funciona el sistema**:
-   - Descripción general de la arquitectura
-   - Explicación de los componentes principales
-   - Flujo de trabajo del sistema
-
-2. **Cómo ponerlo en funcionamiento**:
-   - Deberás incluir las instrucciones detalladas de puesta en marcha
-   - Explicar los requisitos previos necesarios
-   - Describir el proceso de compilación
-   - Detallar cómo ejecutar la aplicación
-
-3. **Cómo probar cada aspecto desarrollado**:
-   - Deberás proporcionar ejemplos de uso para cada funcionalidad implementada
-   - Incluir casos de prueba que demuestren el funcionamiento del sistema
-   - Describir flujos de trabajo completos que muestren la interacción entre diferentes componentes
-
-La guía debe ser clara, concisa y permitir a cualquier usuario entender y probar el sistema. Se valorará especialmente:
-- La claridad de las instrucciones
-- La completitud de la documentación
-- La organización de la información
-- La inclusión de ejemplos prácticos
+```
+---
 
 ### Prueba de Funcionalidades
 
-#### 1. Gestión de Recursos
-- **Agregar Libro**: 
-  - Proceso para agregar un nuevo libro al sistema
-  - Verificación de que el libro se agregó correctamente
-  - Validación de los datos ingresados
 
-- **Buscar Recurso**:
-  - Proceso de búsqueda de recursos
-  - Verificación de resultados de búsqueda
-  - Manejo de casos donde no se encuentran resultados
+#### 1. 📘 Gestión de Recursos
 
-- **Listar Recursos**:
-  - Visualización de todos los recursos
-  - Filtrado por diferentes criterios
-  - Ordenamiento de resultados
+##### ➕ Agregar Libro
+- **Pasos**:
+    1. Seleccionar la opción "Agregar recurso" en el menú principal.
+    2. Completar el formulario con los datos del libro.
+- **Validación**:
+    - Campos vacíos o duplicados generan errores.
+- **Resultado esperado**:
+    - El libro se agrega y aparece al listar recursos.
 
-#### 2. Gestión de Usuarios
-- **Registrar Usuario**:
-  - Proceso de registro de nuevos usuarios
-  - Validación de datos del usuario
-  - Verificación del registro exitoso
+##### 🔍 Buscar Recurso
+- **Pasos**:
+    1. Seleccionar "Buscar recurso".
+    2. Ingresar título, autor o palabra clave.
+- **Casos de prueba**:
+    - Buscar un recurso existente → aparece listado.
+    - Buscar uno inexistente → muestra “sin resultados”.
 
-- **Buscar Usuario**:
-  - Proceso de búsqueda de usuarios
-  - Visualización de información del usuario
-  - Manejo de usuarios no encontrados
+##### 📋 Listar Recursos
+- **Pasos**:
+    1. Seleccionar "Listar todos los recursos".
+    2. Aplicar filtros (por tipo, disponibilidad).
+- **Resultado esperado**:
+    - Se muestran los recursos organizados según el criterio elegido.
 
-#### 3. Préstamos
-- **Realizar Préstamo**:
-  - Proceso completo de préstamo
-  - Verificación de disponibilidad
-  - Actualización de estados
+---
 
-- **Devolver Recurso**:
-  - Proceso de devolución
-  - Actualización de estados
-  - Liberación del recurso
+#### 2. 👤 Gestión de Usuarios
 
-#### 4. Reservas
-- **Realizar Reserva**:
-  - Proceso de reserva de recursos
-  - Gestión de cola de reservas
-  - Notificación de disponibilidad
+##### ➕ Registrar Usuario
+- **Pasos**:
+    1. Ingresar al módulo de usuarios.
+    2. Seleccionar "Registrar nuevo usuario".
+    3. Completar datos (nombre, email, tipo de usuario).
+- **Validación**:
+    - Email debe ser único y válido.
+- **Resultado esperado**:
+    - El usuario queda registrado y visible en la lista.
 
-#### 5. Reportes
-- **Ver Reportes**:
-  - Generación de diferentes tipos de reportes
-  - Visualización de estadísticas
-  - Exportación de datos
+##### 🔎 Buscar Usuario
+- **Pasos**:
+    1. Ingresar a "Buscar usuario".
+    2. Ingresar nombre o ID.
+- **Resultado esperado**:
+    - Se muestra la información del usuario si existe.
 
-#### 6. Alertas
-- **Verificar Alertas**:
-  - Sistema de notificaciones
-  - Diferentes tipos de alertas
-  - Gestión de recordatorios
+---
 
-### Ejemplos de Prueba
-1. **Flujo Completo de Préstamo**:
-   - Registrar un usuario
-   - Agregar un libro
-   - Realizar un préstamo
-   - Verificar el estado del recurso
-   - Devolver el recurso
-   - Verificar la actualización del estado
+#### 3. 🔁 Préstamos
 
-2. **Sistema de Reservas**:
-   - Registrar dos usuarios
-   - Agregar un libro
-   - Realizar una reserva con cada usuario
-   - Verificar la cola de reservas
-   - Procesar las reservas
+##### ➕ Realizar Préstamo
+- **Pasos**:
+    1. Ingresar a "Nuevo préstamo".
+    2. Ingresar ID de recurso y de usuario.
+- **Verificaciones**:
+    - El recurso debe estar disponible.
+    - El usuario no debe tener sanciones activas.
+- **Resultado esperado**:
+    - El préstamo queda registrado correctamente.
 
-3. **Alertas y Notificaciones**:
-   - Realizar un préstamo
-   - Esperar a que se acerque la fecha de vencimiento
-   - Verificar las alertas generadas
-   - Probar la renovación del préstamo
+##### ✔️ Devolver Recurso
+- **Pasos**:
+    1. Ingresar a "Devolver recurso".
+    2. Ingresar el ID del préstamo o del recurso.
+- **Resultado esperado**:
+    - Se actualiza el estado del recurso a "disponible".
+
+---
+
+#### 4. 📆 Reservas
+
+##### ➕ Realizar Reserva
+- **Pasos**:
+    1. Ingresar al módulo de reservas.
+    2. Seleccionar recurso no disponible y confirmar reserva.
+- **Gestión**:
+    - Se coloca al usuario en una cola de espera.
+    - El sistema notifica cuando el recurso esté libre.
+
+---
+
+#### 5. 📊 Reportes
+
+##### 📈 Ver Reportes
+- **Pasos**:
+    1. Ingresar al módulo de reportes.
+    2. Elegir tipo de reporte: préstamos, recursos populares, usuarios activos.
+- **Resultado esperado**:
+    - Visualización gráfica o tabular.
+    - Opción para exportar en CSV o JSON.
+
+---
+
+#### 6. 🚨 Alertas
+
+##### 🔔 Verificar Alertas
+- **Pasos**:
+    1. Ingresar al sistema de alertas.
+    2. Visualizar notificaciones de:
+        - Recursos vencidos
+        - Reservas listas
+        - Penalizaciones activas
+- **Gestión**:
+    - Permite marcar alertas como leídas o resolverlas.
+
+---
+
+## 🧪 Ejemplos de Prueba
+
+---
+
+### Flujo Completo de Préstamo
+
+1. **Registrar un Usuario**
+    - **Descripción**: Registrar un nuevo usuario en el sistema.
+    - **Entrada**: Nombre: "Juan Pérez", Email: "juan.perez@example.com"
+    - **Proceso**: Crear un nuevo registro de usuario con los datos proporcionados.
+    - **Resultado Esperado**: El usuario se registra correctamente en el sistema con los datos indicados.
+
+2. **Agregar un Libro**
+    - **Descripción**: Agregar un nuevo libro al catálogo.
+    - **Entrada**: Título: "Java para Principiantes", Autor: "Juan Pérez"
+    - **Proceso**: El sistema registra el libro con la información proporcionada.
+    - **Resultado Esperado**: El libro "Java para Principiantes" se agrega al catálogo de recursos disponibles.
+
+3. **Realizar un Préstamo**
+    - **Descripción**: Realizar un préstamo del libro "Java para Principiantes" a "Juan Pérez".
+    - **Entrada**: Recurso: "Java para Principiantes", Usuario: "Juan Pérez"
+    - **Proceso**: El sistema verifica la disponibilidad del libro y registra el préstamo.
+    - **Resultado Esperado**: El recurso "Java para Principiantes" pasa a estado "prestado" y se asocia al usuario "Juan Pérez".
+
+4. **Verificar el Estado del Recurso**
+    - **Descripción**: Consultar el estado del libro "Java para Principiantes" después de haber sido prestado.
+    - **Entrada**: Recurso: "Java para Principiantes"
+    - **Proceso**: El sistema muestra el estado actual del recurso.
+    - **Resultado Esperado**: El recurso aparece como "prestado" en el sistema.
+
+5. **Devolver el Recurso**
+    - **Descripción**: Registrar la devolución del libro "Java para Principiantes".
+    - **Entrada**: Recurso: "Java para Principiantes", Usuario: "Juan Pérez"
+    - **Proceso**: El sistema actualiza el estado del libro a "disponible".
+    - **Resultado Esperado**: El libro vuelve a estar disponible para otros usuarios.
+
+6. **Verificar la Actualización del Estado**
+    - **Descripción**: Verificar que el libro "Java para Principiantes" esté disponible después de su devolución.
+    - **Entrada**: Recurso: "Java para Principiantes"
+    - **Proceso**: El sistema consulta el estado actualizado del libro.
+    - **Resultado Esperado**: El libro ahora aparece como "disponible" en el catálogo.
+
+---
+
+### Sistema de Reservas
+
+1. **Registrar Dos Usuarios**
+    - **Descripción**: Registrar dos usuarios en el sistema.
+    - **Entrada**: Usuario 1: "Juan Pérez", Usuario 2: "Ana López"
+    - **Proceso**: El sistema registra ambos usuarios.
+    - **Resultado Esperado**: Ambos usuarios se registran correctamente.
+
+2. **Agregar un Libro**
+    - **Descripción**: Agregar un libro que podrá ser reservado por los usuarios.
+    - **Entrada**: Título: "Java para Principiantes", Autor: "Juan Pérez"
+    - **Proceso**: El sistema agrega el libro al catálogo.
+    - **Resultado Esperado**: El libro "Java para Principiantes" aparece en el catálogo disponible para reserva.
+
+3. **Realizar una Reserva con Cada Usuario**
+    - **Descripción**: Los usuarios intentan reservar el libro "Java para Principiantes".
+    - **Entrada**: Usuario 1: "Juan Pérez", Usuario 2: "Ana López"
+    - **Proceso**: Ambos usuarios hacen una reserva del libro.
+    - **Resultado Esperado**: El sistema coloca a "Juan Pérez" en la cola y notifica a "Ana López" que ha reservado el libro.
+
+4. **Verificar la Cola de Reservas**
+    - **Descripción**: Verificar el estado de la cola de reservas.
+    - **Entrada**: Recurso: "Java para Principiantes"
+    - **Proceso**: El sistema muestra la lista de usuarios que han reservado el libro.
+    - **Resultado Esperado**: El sistema muestra a "Juan Pérez" en cola, esperando por la disponibilidad del libro.
+
+5. **Procesar las Reservas**
+    - **Descripción**: Procesar las reservas y notificar a los usuarios.
+    - **Entrada**: Recurso: "Java para Principiantes"
+    - **Proceso**: El libro es devuelto y el sistema procesa la cola de reservas.
+    - **Resultado Esperado**: "Juan Pérez" es notificado que el libro está disponible para su retiro.
+
+---
+
+### Alertas y Notificaciones
+
+1. **Realizar un Préstamo**
+    - **Descripción**: Registrar un préstamo del libro "Java para Principiantes" a "Juan Pérez".
+    - **Entrada**: Recurso: "Java para Principiantes", Usuario: "Juan Pérez"
+    - **Proceso**: El sistema realiza el préstamo y marca el recurso como "prestado".
+    - **Resultado Esperado**: El préstamo se registra correctamente y el libro aparece como "prestado" en el sistema.
+
+2. **Esperar a que se Acerque la Fecha de Vencimiento**
+    - **Descripción**: El sistema debe generar una alerta cuando se acerque la fecha de vencimiento del préstamo.
+    - **Entrada**: Préstamo: "Java para Principiantes", Usuario: "Juan Pérez"
+    - **Proceso**: El sistema calcula la fecha de vencimiento y genera una alerta de proximidad.
+    - **Resultado Esperado**: El sistema genera una alerta que dice: "El recurso 'Java para Principiantes' debe devolverse en 2 días."
+
+3. **Verificar las Alertas Generadas**
+    - **Descripción**: Verificar que el sistema haya generado correctamente las alertas.
+    - **Entrada**: Préstamo: "Java para Principiantes", Usuario: "Juan Pérez"
+    - **Proceso**: El sistema muestra las alertas generadas para el usuario.
+    - **Resultado Esperado**: El usuario recibe la alerta: "El recurso 'Java para Principiantes' debe devolverse en 2 días."
+
+4. **Probar la Renovación del Préstamo**
+    - **Descripción**: Realizar la renovación del préstamo antes de la fecha de vencimiento.
+    - **Entrada**: Recurso: "Java para Principiantes", Usuario: "Juan Pérez"
+    - **Proceso**: El usuario renueva el préstamo por un período adicional.
+    - **Resultado Esperado**: El sistema renueva el préstamo correctamente y actualiza la fecha de vencimiento.
 
 ## 🧩 Tecnologías y Herramientas
 
