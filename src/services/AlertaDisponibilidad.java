@@ -15,7 +15,6 @@ public class AlertaDisponibilidad {
     }
 
     public void verificarDisponibilidad(int idRecurso) {
-        System.out.println("Lista de recursos disponibles:");
         RecursoDigital recurso = recursos.stream()
                 .filter(r -> r.getId() == idRecurso)
                 .findFirst()
@@ -29,12 +28,14 @@ public class AlertaDisponibilidad {
 
     public void mostrarRecursosDisponibles() {
         int contador = 1;
-        System.out.println("Lista de recursos disponibles:");
         for (RecursoDigital recurso : recursos) {
             if (recurso instanceof Prestable prestable && !prestable.estaPrestado()) {
-                System.out.println(contador + ". Recurso disponible: " + recurso.getTitulo() + " (ID: " + recurso.getId() + ")");
+                System.out.println(contador + ". " + recurso.getTitulo() + " (ID: " + recurso.getId() + ")");
                 contador++;
             }
+        }
+        if (contador == 1) {
+            System.out.println("No hay recursos disponibles.");
         }
     }
 
