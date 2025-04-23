@@ -2,6 +2,7 @@ package services;
 
 import console.ConsolaUsuarios;
 import interfaces.IServicioNotificaciones;
+import models.NivelUrgencia;
 import models.Usuario;
 
 import java.util.ArrayList;
@@ -11,10 +12,11 @@ import java.util.Map;
 
 public class GestorUsuarios {
     private IServicioNotificaciones servicioNotificaciones;
+    private static GestorNotificaciones gestorNotificaciones;
     private static Map<Integer, Usuario> usuarios = new HashMap<>();
 
-    public GestorUsuarios(IServicioNotificaciones servicioNotificaciones) {
-        this.servicioNotificaciones = servicioNotificaciones;
+    public GestorUsuarios(GestorNotificaciones gestorNotificaciones) {
+        this.gestorNotificaciones = gestorNotificaciones;
     }
 
     public void listarUsuarios() {
@@ -22,7 +24,7 @@ public class GestorUsuarios {
         for (Usuario u : usuarios.values()) {
             System.out.println("- " + u.getNombre() + " " + u.getApellido() + "(" + u.getId() + ")");
         }
-        servicioNotificaciones.enviarNotificacion("Listado de usuarios mostrado correctamente.");
+        gestorNotificaciones.notificar("Listado de usuarios mostrado correctamente.", NivelUrgencia.INFO);
     }
 
 
@@ -38,11 +40,11 @@ public class GestorUsuarios {
             Usuario u = usuarios.get(id);
             String nombre = u.getNombre() + " " + u.getApellido() + "(" + u.getId() + ")";
             usuarios.remove(id);
-            servicioNotificaciones.enviarNotificacion("Usuario " + nombre + " eliminado con éxito.");
+            gestorNotificaciones.notificar("Usuario " + nombre + " eliminado con éxito.", NivelUrgencia.INFO);
             System.out.println(Thread.currentThread().getName() + " - Usuario eliminado: " + nombre);
         } else {
             System.out.println(Thread.currentThread().getName() + " - No se encontró ningún usuario con el ID ingresado.");
-            servicioNotificaciones.enviarNotificacion("Usuario no encontrado.");
+            gestorNotificaciones.notificar("Usuario no encontrado.", NivelUrgencia.ERROR);
         }
     }
 
@@ -60,6 +62,7 @@ public class GestorUsuarios {
         }
 
         if (encontrados.isEmpty()) {
+            gestorNotificaciones.notificar("No se encontraron usuarios con ese nombre o apellido.", NivelUrgencia.ERROR);
             throw new exceptions.UsuarioNoEncontradoException("No se encontraron usuarios con ese nombre o apellido.");
         }
 
@@ -73,6 +76,7 @@ public class GestorUsuarios {
             System.out.println("1 - " + usuario.getNombre() + " " + usuario.getApellido() + " (" + usuario.getId() + ")");
             return usuario;
         } else {
+            gestorNotificaciones.notificar("No se encontró un usuario con ID " + idBuscado, NivelUrgencia.ERROR);
             throw new exceptions.UsuarioNoEncontradoException("No se encontró un usuario con ID " + idBuscado);
         }
     }
@@ -89,8 +93,7 @@ public class GestorUsuarios {
         for (Usuario usuario : usuariosDePrueba) {
             GestorUsuarios.agregarUsuario(usuario);
         }
-
-        System.out.println("Usuarios de prueba creados y registrados exitosamente.");
+        gestorNotificaciones.notificar("Usuarios de prueba creados y registrados exitosamente.", NivelUrgencia.INFO);
     }
 
 

@@ -39,18 +39,4 @@ public class AlertaDisponibilidad {
         }
     }
 
-
-    public void prestarRecurso(RecursoDigital recurso, Usuario usuario) {
-        if (recurso instanceof Prestable prestable) {
-            if (!prestable.estaPrestado()) {
-                prestable.prestar();
-                Prestamo prestamo = new Prestamo(recurso, usuario);
-                System.out.println("Préstamo exitoso: " + recurso.getTitulo() + " a " + usuario.getNombre());
-            } else {
-                System.out.println("El recurso ya está prestado.");
-            }
-        } else {
-            System.out.println("El recurso no es prestable.");
-        }
-    }
 }

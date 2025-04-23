@@ -22,10 +22,10 @@ public class Consola {
     public static void main(String[] args) {
         ServicioNotificacionesEmail servicioNotificacionesEmail = new ServicioNotificacionesEmail();
         gestorNotificaciones = new GestorNotificaciones(servicioNotificacionesEmail);
-        gestorUsuarios = new GestorUsuarios(servicioNotificacionesEmail);
-        gestorRecursos = new GestorRecursos(servicioNotificacionesEmail);
-        gestorPrestamos = new GestorPrestamos(servicioNotificacionesEmail);
-        gestorReservas = new GestorReservas(servicioNotificacionesEmail);
+        gestorUsuarios = new GestorUsuarios(gestorNotificaciones);
+        gestorRecursos = new GestorRecursos(gestorNotificaciones);
+        gestorPrestamos = new GestorPrestamos(gestorNotificaciones);
+        gestorReservas = new GestorReservas(gestorNotificaciones);
         alertasDisponibilidad = new AlertaDisponibilidad(GestorRecursos.getRecursos());
         inciarConsola();
     }
@@ -33,10 +33,10 @@ public class Consola {
     public static void inicializar() {
         ServicioNotificacionesEmail servicioNotificacionesEmail = new ServicioNotificacionesEmail();
         gestorNotificaciones = new GestorNotificaciones(servicioNotificacionesEmail);
-        gestorUsuarios = new GestorUsuarios(servicioNotificacionesEmail);
-        gestorRecursos = new GestorRecursos(servicioNotificacionesEmail);
-        gestorPrestamos = new GestorPrestamos(servicioNotificacionesEmail);
-        gestorReservas = new GestorReservas(servicioNotificacionesEmail);
+        gestorUsuarios = new GestorUsuarios(gestorNotificaciones);
+        gestorRecursos = new GestorRecursos(gestorNotificaciones);
+        gestorPrestamos = new GestorPrestamos(gestorNotificaciones);
+        gestorReservas = new GestorReservas(gestorNotificaciones);
         alertasDisponibilidad = new AlertaDisponibilidad(gestorRecursos.getRecursos());
     }
 
@@ -60,7 +60,7 @@ public class Consola {
         System.out.println("3. Gestor Prestamos");
         System.out.println("4. Gestor Reservas");
         System.out.println("5. Reportes");
-        System.out.println("6. Alertar Vencimientos");
+        System.out.println("6. Alertas");
         System.out.println("7. Salir");
     }
 
@@ -85,14 +85,7 @@ public class Consola {
                     ConsolaReportes.MenuReportes();
                     break;
                 case 6:
-                    System.out.println("=== ALERTAS DE VENCIMIENTO ===");
-                    if (gestorPrestamos.getPrestamosActivos().isEmpty()) {
-                        System.out.println("No hay préstamos activos para verificar alertas.");
-                        break;
-                    }
-
-                    alertasVencimiento = new AlertaVencimiento(gestorPrestamos.getPrestamosActivos(), gestorNotificaciones);
-                    alertasVencimiento.verificarAlertas();
+                    ConsolaAlertas.MenuAlertas();
                     break;
 
                 case 7:
